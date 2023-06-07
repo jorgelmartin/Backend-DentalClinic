@@ -8,6 +8,6 @@ const router = require('express').Router();
 router.post('/', auth, isAdmin, treatmentController.createTreatment)
 router.put('/:id', auth, isAdmin, treatmentController.updateTreatment)
 router.delete('/:id', auth, isAdmin, treatmentController.deleteTreatment)
-router.get('/', auth, treatmentController.getAllTreatment)
+router.get('/', auth, treatmentController.getAllTreatments)
 
 module.exports = router;

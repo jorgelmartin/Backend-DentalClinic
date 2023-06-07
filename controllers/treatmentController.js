@@ -1,5 +1,4 @@
 const { Treatment } = require("../models");
-const treatment = require("../models/treatment");
 const authController = require("./authController");
 const { QueryTypes } = require('sequelize');
 
@@ -114,7 +113,7 @@ treatmentController.deleteTreatment = async(req, res) => {
     }
 }
 
-treatmentController.getAllTreatment = async(req, res) => {
+treatmentController.getAllTreatments = async(req, res) => {
     try {
         const treatment = await Treatment.findAll();
 
