@@ -1,5 +1,4 @@
 const { Treatment } = require("../models");
-const authController = require("./authController");
 const { QueryTypes } = require('sequelize');
 
 

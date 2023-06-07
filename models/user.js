@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const { PassThrough } = require('stream');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -11,6 +12,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      models.User.belongsToMany(
+        models.Treatment,
+        {
+          through: 'appoiments',
+          foreignKey: 'user_id'
+        }
+      )
     }
   }
   User.init({

@@ -17,7 +17,7 @@ authController.register = async (req, res) => {
                 name: req.body.name,
                 email: req.body.email,
                 password: newPassword,
-                role_id: 1
+                role_id: req.body.role_id
             }
         );
 

@@ -1,3 +1,4 @@
+const { log } = require("console");
 const { User } = require("../models");
 const { QueryTypes } = require('sequelize');
 
@@ -131,6 +132,31 @@ userController.getAllUsers = async(req, res) => {
             }
         )
     }
-}
+};
+
+// userController.getUserTreatmentsAppoiments = (req, res) => {
+//     try {
+//         const userId = req.userId;
+//         // console.log(req.userId);
+//         const getUserTreatmentAppoiments = User.findByPk(
+//             userId,
+//             );
+
+//         return res.json({
+//             success: true,
+//             message: "Get all treatment appointments",
+//             // data: users
+//         })
+//     } catch (error) {
+//         return res.status(500).json(
+//             {
+//                 success: false,
+//                 // message:
+
+//             }
+//         )
+        
+//     }
+// }
 
 module.exports = userController;

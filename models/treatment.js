@@ -11,6 +11,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      models.Treatment.belongsToMany(
+        models.User,
+        {
+          through: 'appoiments',
+          foreignKey: 'treatment_id'
+        }
+      )
     }
   }
   Treatment.init({
