@@ -8,6 +8,6 @@ const router = require('express').Router();
 router.post('/', auth, isAdmin, roleController.createRole)
 router.put('/:id', auth, isAdmin, roleController.updateRole)
 router.delete('/:id', auth, isAdmin, roleController.deleteRole)
-router.get('/', auth, roleController.getAllRole)
+router.get('/', auth, roleController.getAllRoles)
 
 module.exports = router;

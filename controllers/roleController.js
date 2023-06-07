@@ -1,5 +1,4 @@
 const { Role } = require("../models");
-const role = require("../models/role");
 const authController = require("./authController");
 const { QueryTypes } = require('sequelize');
 
@@ -8,7 +7,7 @@ const roleController = {};
 
 roleController.createRole = async(req, res) => {
     try {
-        const { name } = req.body;
+        const { name } = req.body.name;
 
         //validaciones
 
@@ -49,7 +48,7 @@ roleController.updateRole = async(req, res) => {
             );
         };
 
-        const { name } = req.body;
+        const { name } = req.body.name;
 
         const roleUpdated = await Role.update(
             {
