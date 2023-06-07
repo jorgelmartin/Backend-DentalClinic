@@ -1,63 +1,69 @@
-const { Role } = require("../models");
-const role = require("../models/role");
+const { Treatment } = require("../models");
+const treatment = require("../models/treatment");
 const authController = require("./authController");
 const { QueryTypes } = require('sequelize');
 
 
-const roleController = {};
+const treatmentController = {};
 
-roleController.createRole = async(req, res) => {
+treatmentController.createTreatment = async(req, res) => {
     try {
-        const { name } = req.body;
+        const { name,price,description,duration } = req.body;
 
         //validaciones
 
-        const newRole = await Role.create(
+        const newTreatment = await Treatment.create(
             {
                 name,
+                price,
+                description,
+                duration
             }
         );
         
         return res.json({
             success: true,
-            message: "Role created",
-            data: newRole
+            message: "Treatment created",
+            data: newTreatment
         });       
     } catch (error) {
         return res.status(500).json(
             {
                 success: false,
-                message: "Role cant be created",
+                message: "Treatment cant be created",
                 error: error
             }
         )
     }
 }
 
-roleController.updateRole = async(req, res) => {
+treatmentController.updateTreatment = async(req, res) => {
     try {
-        const roleId = req.params.id;
+        const treatmentId = req.params.id;
 
-        const role = await role.findByPk(roleId);
+        const treatment = await Treatment.findByPk(treatmentId);
 
-        if (!role) {
+        if (!treatment) {
             return res.json(
                 {
                     success: true,
-                    message: "Role doesnt exists"
+                    message: "Treatment doesnt exists"
                 }
             );
         };
 
-        const { name } = req.body;
+        const { name,price,description,duration } = req.body;
 
-        const roleUpdated = await role.update(
+        const treatmentUpdated = await Treatment.update(
             {
-                name
+                name,
+                price,
+                description,
+                duration
             },
             {
                 where: {
-                    id: roleId
+                    id: treatmentId
                 }
             }
         )
@@ -65,69 +71,69 @@ roleController.updateRole = async(req, res) => {
         return res.json(
             {
                 success: true,
-                message: "Role updated",
-                data: roleUpdated
+                message: "Treatment updated",
+                data: treatmentUpdated
             }
         );
     } catch (error) {
         return res.status(500).json(
             {
                 success: false,
-                message: "Role cant be updated",
+                message: "Treatment cant be updated",
                 error: error
             }
         )
     }
 }
 
-roleController.deleteRole = async(req, res) => {
+treatmentController.deleteTreatment = async(req, res) => {
     try {
-        const roleId = req.params.id;
+        const treatmentId = req.params.id;
 
-        const deleteRole = await role.destroy({
+        const deleteTreatment = await Treatment.destroy({
             where: {
-                id: roleId
+                id: treatmentId
             }
         })
 
         return res.json(
             {
                 success: true,
-                message: "Role deleted successfully",
-                data: deleteRole
+                message: "Treatment deleted successfully",
+                data: deleteTreatment
             }
         );
     } catch (error) {
         return res.status(500).json(
             {
                 success: false,
-                message: "Role cant be deleted",
+                message: "Treatment cant be deleted",
                 error: error
             }
         )
     }
 }
 
-roleController.getAllRoles = async(req, res) => {
+treatmentController.getAllTreatment = async(req, res) => {
     try {
-        const roles = await role.findAll();
+        const treatment = await Treatment.findAll();
 
         return res.json(
             {
                 success: true,
-                message: "Get all roles retrieved",
-                data: roles
+                message: "Get all treatment retrieved",
+                data: treatment
             }
         )
     } catch (error) {
         return res.status(500).json(
             {
                 success: false,
-                message: "Roles cant be retrieved",
+                message: "Treatment cant be retrieved",
                 error: error.message
             }
         )
     }
 }
 
-module.exports = roleController;
+module.exports = treatmentController;

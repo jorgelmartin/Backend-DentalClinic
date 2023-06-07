@@ -38,7 +38,7 @@ roleController.updateRole = async(req, res) => {
     try {
         const roleId = req.params.id;
 
-        const role = await role.findByPk(roleId);
+        const role = await Role.findByPk(roleId);
 
         if (!role) {
             return res.json(
@@ -51,7 +51,7 @@ roleController.updateRole = async(req, res) => {
 
         const { name } = req.body;
 
-        const roleUpdated = await role.update(
+        const roleUpdated = await Role.update(
             {
                 name
             },
@@ -84,7 +84,7 @@ roleController.deleteRole = async(req, res) => {
     try {
         const roleId = req.params.id;
 
-        const deleteRole = await role.destroy({
+        const deleteRole = await Role.destroy({
             where: {
                 id: roleId
             }
@@ -110,7 +110,7 @@ roleController.deleteRole = async(req, res) => {
 
 roleController.getAllRoles = async(req, res) => {
     try {
-        const roles = await role.findAll();
+        const roles = await Role.findAll();
 
         return res.json(
             {
