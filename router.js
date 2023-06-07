@@ -3,6 +3,6 @@ const authRoutes = require('./views/authRoutes');
 const roleRoutes = require('./views/roleRoutes')
 
 router.use('/auth', authRoutes);
-router.use('/role', roleRoutes);
+// router.use('/role', roleRoutes);
 
 module.exports = router;

@@ -1,6 +1,5 @@
 const isAdmin = (req, res, next) => {
     try {
-        // si no eres admin no puede crear libros
         if (req.roleId !== 2) {
             return res.json({
                 success: true,
