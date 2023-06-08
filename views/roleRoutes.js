@@ -1,4 +1,4 @@
-const authController = require('../controllers/authController');
+
 const roleController = require('../controllers/roleController');
 const isAdmin = require('../middlewares/isAdmin');
 const auth = require('../middlewares/verifyToken');
