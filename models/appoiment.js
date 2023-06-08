@@ -11,11 +11,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      models.Appoiment.belongsToMany(models.User, {
-        through: 'appointments',
-        foreignKey: 'appoiment_id'
-      });
-    };
     }
   }
   Appoiment.init({
