@@ -8,8 +8,6 @@ roleController.createRole = async(req, res) => {
     try {
         const { name } = req.body.name;
 
-        //validaciones
-
         const newRole = await Role.create(
             {
                 name,
@@ -100,7 +98,7 @@ roleController.deleteRole = async(req, res) => {
             {
                 success: false,
                 message: "Role cant be deleted",
-                error: error
+                error: error.message
             }
         )
     }

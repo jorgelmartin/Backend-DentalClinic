@@ -14,8 +14,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Appoiment.init({
-    role_id: DataTypes.INTEGER,
-    treatment_id: DataTypes.INTEGER,
+    userId: DataTypes.INTEGER,
+    treatmentId: DataTypes.INTEGER,
     date: DataTypes.INTEGER,
     hour: DataTypes.INTEGER
   }, {

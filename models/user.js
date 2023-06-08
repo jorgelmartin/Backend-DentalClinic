@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       models.User.belongsToMany(
         models.Treatment,
         {
-          through: 'appoiments',
+          through: 'Appoiments',
           foreignKey: 'user_id'
         }
       )

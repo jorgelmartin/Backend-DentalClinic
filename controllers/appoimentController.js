@@ -7,7 +7,7 @@ appoimentController.createAppoiment = async(req, res) => {
         const { treatment_id,user_id,date,hour } = req.body;
 
 
-        const appoiment = await Appoiment.create(
+        const newAppoiment = await Appoiment.create(
             {
                 treatment_id,
                 user_id,
@@ -20,7 +20,7 @@ appoimentController.createAppoiment = async(req, res) => {
             {
                 success: true,
                 message: "Appoiment created",
-                data: favorite
+                data: newAppoiment
             }
         );
     } catch (error) {

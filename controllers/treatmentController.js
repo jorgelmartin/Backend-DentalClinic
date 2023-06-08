@@ -106,7 +106,7 @@ treatmentController.deleteTreatment = async(req, res) => {
             {
                 success: false,
                 message: "Treatment cant be deleted",
-                error: error
+                error: error.message
             }
         )
     }
