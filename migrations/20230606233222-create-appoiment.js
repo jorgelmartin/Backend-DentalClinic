@@ -9,11 +9,19 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      role_id: {
-        type: Sequelize.INTEGER
+      user_id: {
+        type: Sequelize.INTEGER,
+        references:{
+          model:"Users",
+          key: "id"
+        }
       },
       treatment_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references:{
+          model:"Treatments",
+          key: "id"
+        }
       },
       date: {
         type: Sequelize.INTEGER

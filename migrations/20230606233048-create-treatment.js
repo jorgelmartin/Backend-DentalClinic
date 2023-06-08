@@ -16,7 +16,7 @@ module.exports = {
         type: Sequelize.FLOAT
       },
       description: {
-        Type: Sequelize.STRING
+        type: Sequelize.STRING
       },
       duration: {
         type: Sequelize.STRING

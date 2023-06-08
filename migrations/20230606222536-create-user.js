@@ -22,7 +22,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         references:{
           model:"Roles",
-          key:"role_id"
+          key: "id"
         }
       },
       createdAt: {
