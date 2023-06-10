@@ -17,8 +17,8 @@ const auth = (req, res, next) => {
 
         const decoded = jwt.verify(token, 'secreto');
 
-        req.userId = decoded.userId;
-        req.roleId = decoded.roleId;
+        req.user_id = decoded.user_id;
+        req.role_id = decoded.role_id;
 
         next();
     } catch (error) {
