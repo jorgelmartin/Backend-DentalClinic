@@ -30,8 +30,6 @@ authController.register = async (req, res) => {
 authController.login = async (req, res) => {
     try {
         const { email, password } = req.body;
-        // const email = req.body.email;
-        // const password = req.body.password;
 
         const user = await User.findOne(
             {
