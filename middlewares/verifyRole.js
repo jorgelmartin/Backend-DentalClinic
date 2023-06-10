@@ -1,4 +1,4 @@
-const isAdmin = (req, res, next) => {
+const isDentist = (req, res, next) => {
     try {
         if (req.roleId !== 2) {
             return res.json({
@@ -19,4 +19,4 @@ const isAdmin = (req, res, next) => {
     }
 }
 
-module.exports = isAdmin;
+module.exports = isDentist;
