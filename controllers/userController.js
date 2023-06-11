@@ -6,7 +6,7 @@ const userController = {};
 
 userController.createUser = async(req, res) => {
     try {
-        const {fullname, email, password, nif, direction, age, phone} = req.body;
+        const {fullname, email, password, nif, role_id, direction, age, phone} = req.body;
 
         //validaciones
 
@@ -15,8 +15,8 @@ userController.createUser = async(req, res) => {
                 fullname,
                 email,
                 password,
-                role,
                 nif,
+                role_id,
                 direction,
                 age,
                 phone
@@ -54,15 +54,15 @@ userController.updateUser = async(req, res) => {
             );
         };
 
-        const {fullname, email, password, nif, direction, age, phone} = req.body;
+        const {fullname, email, password, nif, role_id, direction, age, phone} = req.body;
 
         const userUpdated = await User.update(
             {
                 fullname,
                 email,
                 password,
-                role,
                 nif,
+                role_id,
                 direction,
                 age,
                 phone
@@ -142,17 +142,17 @@ userController.getAllUsers = async(req, res) => {
     }
 };
 
-// userController.getUserTreatmentsAppoiments = (req, res) => {
+// userController.getUserServicesappointments = (req, res) => {
 //     try {
 //         const userId = req.userId;
 //         // console.log(req.userId);
-//         const getUserTreatmentAppoiments = User.findByPk(
+//         const getUserAppointmentServices = User.findByPk(
 //             userId,
 //             );
 
 //         return res.json({
 //             success: true,
-//             message: "Get all treatment appointments",
+//             message: "Get all service appointments",
 //             // data: users
 //         })
 //     } catch (error) {

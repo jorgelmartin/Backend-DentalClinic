@@ -19,17 +19,17 @@ module.exports = {
       password: {
         type: Sequelize.STRING
       },
-      role: {
-        type: Sequelize.STRING,
+      nif: {
+        type: Sequelize.STRING
+      },
+      role_id: {
+        type: Sequelize.INTEGER,
         references:{
-          model:"Role",
+          model:"Roles",
           key: "id"
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
-      },
-      nif: {
-        type: Sequelize.STRING
       },
       direction: {
         type: Sequelize.STRING

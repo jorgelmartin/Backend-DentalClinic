@@ -2,51 +2,30 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Appointments', {
+    await queryInterface.createTable('UserRoles', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      patient_id: {
+      user_id: {
         type: Sequelize.INTEGER,
-        references: {
-          model: "Users",
-          key: "id",
-          where: {
-            role_id: 3
-          }
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
-      },
-      dentist_id: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: "Users",
-          key: "id",
-          where: {
-            role_id: 2
-          }
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
-      },
-      service_id: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: "Services",
+        references:{
+          model:"Users",
           key: "id"
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      date: {
-        type: Sequelize.INTEGER
-      },
-      hour: {
-        type: Sequelize.INTEGER
+      role_id: {
+        type: Sequelize.INTEGER,
+        references:{
+          model:"Roles",
+          key: "id"
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       createdAt: {
         allowNull: false,
@@ -59,6 +38,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Appointments');
+    await queryInterface.dropTable('UserRoles');
   }
 };
