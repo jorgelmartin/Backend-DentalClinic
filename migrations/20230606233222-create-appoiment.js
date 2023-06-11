@@ -9,19 +9,19 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      user_id: {
+      patient_id: {
         type: Sequelize.INTEGER,
         references:{
-          model:"Users",
+          model:"UserRole",
           key: "id"
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      doctor_id: {
+      dentist_id: {
         type: Sequelize.INTEGER,
         references:{
-          model:"Users",
+          model:"UserRole",
           key: "id"
         },
         onUpdate: 'CASCADE',
@@ -30,7 +30,7 @@ module.exports = {
       treatment_id: {
         type: Sequelize.INTEGER,
         references:{
-          model:"Treatments",
+          model:"Treatment",
           key: "id"
         },
         onUpdate: 'CASCADE',

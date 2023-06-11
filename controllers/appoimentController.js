@@ -4,13 +4,13 @@ const appoimentController = {}
 appoimentController.createAppoiment = async(req, res) => {
     try {
         
-        const { user_id,doctor_id,treatment_id,date,hour } = req.body;
+        const { patient_id,dentist_id,treatment_id,date,hour } = req.body;
 
 
         const newAppoiment = await Appoiment.create(
             {
-                user_id,
-                doctor_id,
+                patient_id,
+                dentist_id,
                 treatment_id,
                 date,
                 hour
@@ -49,12 +49,12 @@ appoimentController.updateAppoiment = async(req, res) => {
             );
         };
 
-        const { user_id,doctor_id,treatment_id,date,hour } = req.body;
+        const { patient_id,dentist_id,treatment_id,date,hour } = req.body;
 
         const appoimentUpdated = await Appoiment.update(
             {
-                user_id,
-                doctor_id,
+                patient_id,
+                dentist_id,
                 treatment_id,
                 date,
                 hour
