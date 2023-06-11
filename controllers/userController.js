@@ -6,16 +6,20 @@ const userController = {};
 
 userController.createUser = async(req, res) => {
     try {
-        const { name,email,password,role_id } = req.body;
+        const {fullname, email, password, nif, direction, age, phone} = req.body;
 
         //validaciones
 
         const newUser = await User.create(
             {
-                name,
+                fullname,
                 email,
                 password,
-                role_id
+                role,
+                nif,
+                direction,
+                age,
+                phone
             }
         );
         
@@ -50,14 +54,18 @@ userController.updateUser = async(req, res) => {
             );
         };
 
-        const { name,email,password,role_id } = req.body;
+        const {fullname, email, password, nif, direction, age, phone} = req.body;
 
         const userUpdated = await User.update(
             {
-                name,
+                fullname,
                 email,
                 password,
-                role_id
+                role,
+                nif,
+                direction,
+                age,
+                phone
             },
             {
                 where: {
