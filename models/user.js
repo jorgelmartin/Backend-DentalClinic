@@ -13,9 +13,9 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       models.User.belongsToMany(
-        models.Treatment,
+        models.Role,
         {
-          through: 'Appoiments',
+          through: 'UserRole',
           foreignKey: 'user_id'
         }
       )
