@@ -9,23 +9,36 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
+      fullname: {
         type: Sequelize.STRING
       },
       email: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true
       },
       password: {
         type: Sequelize.STRING
       },
-      role_id: {
-        type: Sequelize.INTEGER,
+      role: {
+        type: Sequelize.STRING,
         references:{
-          model:"Roles",
+          model:"Role",
           key: "id"
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
+      },
+      nif: {
+        type: Sequelize.STRING
+      },
+      direction: {
+        type: Sequelize.STRING
+      },
+      age: {
+        type: Sequelize.INTEGER
+      },
+      phone: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: true,

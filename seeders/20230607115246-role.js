@@ -13,16 +13,16 @@ module.exports = {
      * }], {});
     */
 
-    return queryInterface.bulkInsert('Roles', [
+    return queryInterface.bulkInsert('Role', [
       {
         id: 1,
-        name: 'user',
+        name: 'patient',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
         id: 2,
-        name: 'doctor',
+        name: 'dentist',
         createdAt: new Date(),
         updatedAt: new Date()
       },
