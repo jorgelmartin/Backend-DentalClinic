@@ -61,7 +61,7 @@ appoimentController.updateAppoiment = async(req, res) => {
             },
             {
                 where: {
-                    id: treatmentId
+                    id: appoimentId
                 }
             }
         )
@@ -78,7 +78,7 @@ appoimentController.updateAppoiment = async(req, res) => {
             {
                 success: false,
                 message: "Appoiment cant be updated",
-                error: error
+                error: error.message
             }
         )
     }

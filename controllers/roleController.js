@@ -24,7 +24,7 @@ roleController.createRole = async(req, res) => {
             {
                 success: false,
                 message: "Role cant be created",
-                error: error
+                error: error.message
             }
         )
     }
@@ -70,7 +70,7 @@ roleController.updateRole = async(req, res) => {
             {
                 success: false,
                 message: "Role cant be updated",
-                error: error
+                error: error.message
             }
         )
     }

@@ -6,8 +6,8 @@ const authController = {};
 
 authController.register = async (req, res) => {
     try {
-        if (req.body.password.length < 4) {
-            return res.send('Password must be longer than 4 characters');
+        if (req.body.password.length < 8) {
+            return res.send('Password must be longer than 8 characters');
         }
 
         const newPassword = bcrypt.hashSync(req.body.password, 8);
@@ -66,7 +66,7 @@ authController.login = async (req, res) => {
                 roleId: user.role_id,
                 email: user.email
             },
-            'secreto',
+            'secret',
             {
                 expiresIn: '3h' 
             }
@@ -75,7 +75,7 @@ authController.login = async (req, res) => {
         return res.json(
             {
                 success: true,
-                message: "User Logged",
+                message: "User logged",
                 token: token
             }
         );
@@ -83,8 +83,8 @@ authController.login = async (req, res) => {
         return res.status(500).json(
             {
                 success: false,
-                message: "user cant be logged",
-                error: error
+                message: "User cant be logged",
+                error: error.message
             }
         )
     }

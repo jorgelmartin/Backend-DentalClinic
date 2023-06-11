@@ -22,13 +22,13 @@ module.exports = {
       },
       {
         id: 2,
-        name: 'admin',
+        name: 'doctor',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
         id: 3,
-        name: 'super_admin',
+        name: 'boss',
         createdAt: new Date(),
         updatedAt: new Date()
       }
