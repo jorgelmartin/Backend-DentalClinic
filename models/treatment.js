@@ -15,16 +15,15 @@ module.exports = (sequelize, DataTypes) => {
         models.User,
         {
           through: 'Appoiment',
-          foreignKey: 'treatment_id'
+          foreignKey: 'treatment'
         }
       )
     }
   }
   Treatment.init({
     name: DataTypes.STRING,
-    description: DataTypes.STRING,
     price: DataTypes.FLOAT,
-    duration: DataTypes.INTEGER,
+    duration: DataTypes.STRING,
 
   }, {
     sequelize,

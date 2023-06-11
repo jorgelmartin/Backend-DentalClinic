@@ -6,7 +6,7 @@ const treatmentController = {};
 
 treatmentController.createTreatment = async(req, res) => {
     try {
-        const { name,price,description,duration } = req.body;
+        const { name,price,duration } = req.body;
 
         //validaciones
 
@@ -14,7 +14,6 @@ treatmentController.createTreatment = async(req, res) => {
             {
                 name,
                 price,
-                description,
                 duration
             }
         );
@@ -50,13 +49,12 @@ treatmentController.updateTreatment = async(req, res) => {
             );
         };
 
-        const { name,price,description,duration } = req.body;
+        const { name,price,duration } = req.body;
 
         const treatmentUpdated = await Treatment.update(
             {
                 name,
                 price,
-                description,
                 duration
             },
             {

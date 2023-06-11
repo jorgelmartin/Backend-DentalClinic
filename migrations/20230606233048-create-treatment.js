@@ -10,13 +10,11 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true
       },
       price: {
         type: Sequelize.FLOAT
-      },
-      description: {
-        type: Sequelize.STRING
       },
       duration: {
         type: Sequelize.STRING
