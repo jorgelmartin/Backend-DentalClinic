@@ -1,6 +1,6 @@
 
 const roleController = require('../controllers/roleController');
-const isDentist = require('../middlewares/verifyRole');
+const isDentist = require('../middlewares/verifyDentist.js');
 const auth = require('../middlewares/verifyToken');
 
 const router = require('express').Router();
