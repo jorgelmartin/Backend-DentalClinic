@@ -1,6 +1,6 @@
 const isDentist = (req, res, next) => {
     try {
-        if (req.roleId !== 2) {
+        if (req.role_id !== 2) {
             return res.json({
                 success: true,
                 message: "You dont have permissions"
@@ -13,7 +13,7 @@ const isDentist = (req, res, next) => {
             {
                 success: false,
                 message: "You dont have permissions",
-                error: error
+                error: error.message
             }
         )
     }

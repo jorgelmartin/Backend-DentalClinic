@@ -8,7 +8,7 @@ const auth = (req, res, next) => {
             return res.json(
                 {
                     succes: true,
-                    message: "no puedes pasar"
+                    message: "Wrong credentials"
                 }
             )
         }
@@ -26,7 +26,7 @@ const auth = (req, res, next) => {
             {
                 success: false,
                 message: "Token Invalid",
-                error: error
+                error: error.message
             }
         )
     }
