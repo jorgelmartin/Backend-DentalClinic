@@ -12,9 +12,17 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-    return queryInterface.bulkInsert('Treatment', [
+    return queryInterface.bulkInsert('Service', [
       {
         id: 1,
+        name: 'Consulta',
+        price: null,
+        duration: '15min',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        id: 2,
         name: 'Dental cleaning',
         price: '40.00',
         duration: '30min',
@@ -22,7 +30,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        id: 2,
+        id: 3,
         name: 'Teeth whitening',
         price: '100.00',
         duration: '45min',
@@ -30,7 +38,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        id: 3,
+        id: 4,
         name: 'Tooth extraction',
         price: '49.99',
         duration: '30min',
@@ -38,7 +46,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        id: 4,
+        id: 5,
         name: 'Dental implants',
         price: '120.99',
         duration: '60min',
@@ -46,7 +54,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        id: 5,
+        id: 6,
         name: 'Dental prosthetics',
         price: '79.99',
         duration: '50min',
@@ -54,7 +62,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        id: 6,
+        id: 7,
         name: 'Root canal treatment',
         price: '50.00',
         duration: '60min',

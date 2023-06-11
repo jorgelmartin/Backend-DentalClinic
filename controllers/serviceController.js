@@ -1,16 +1,16 @@
-const { Treatment } = require("../models");
+const { Service } = require("../models");
 const { QueryTypes } = require('sequelize');
 
 
-const treatmentController = {};
+const serviceController = {};
 
-treatmentController.createTreatment = async(req, res) => {
+serviceController.createService = async(req, res) => {
     try {
         const { name,price,duration } = req.body;
 
         //validaciones
 
-        const newTreatment = await Treatment.create(
+        const newService = await Service.create(
             {
                 name,
                 price,
@@ -20,38 +20,38 @@ treatmentController.createTreatment = async(req, res) => {
         
         return res.json({
             success: true,
-            message: "Treatment created",
-            data: newTreatment
+            message: "Service created",
+            data: newService
         });       
     } catch (error) {
         return res.status(500).json(
             {
                 success: false,
-                message: "Treatment cant be created",
+                message: "Service cant be created",
                 error: error
             }
         )
     }
 }
 
-treatmentController.updateTreatment = async(req, res) => {
+serviceController.updateService = async(req, res) => {
     try {
-        const treatmentId = req.params.id;
+        const serviceId = req.params.id;
 
-        const treatment = await Treatment.findByPk(treatmentId);
+        const service = await Service.findByPk(serviceId);
 
-        if (!treatment) {
+        if (!service) {
             return res.json(
                 {
                     success: true,
-                    message: "Treatment doesnt exists"
+                    message: "Service doesnt exists"
                 }
             );
         };
 
         const { name,price,duration } = req.body;
 
-        const treatmentUpdated = await Treatment.update(
+        const serviceUpdated = await Service.update(
             {
                 name,
                 price,
@@ -59,7 +59,7 @@ treatmentController.updateTreatment = async(req, res) => {
             },
             {
                 where: {
-                    id: treatmentId
+                    id: serviceId
                 }
             }
         )
@@ -67,69 +67,69 @@ treatmentController.updateTreatment = async(req, res) => {
         return res.json(
             {
                 success: true,
-                message: "Treatment updated",
-                data: treatmentUpdated
+                message: "Service updated",
+                data: serviceUpdated
             }
         );
     } catch (error) {
         return res.status(500).json(
             {
                 success: false,
-                message: "Treatment cant be updated",
+                message: "Service cant be updated",
                 error: error
             }
         )
     }
 }
 
-treatmentController.deleteTreatment = async(req, res) => {
+serviceController.deleteService = async(req, res) => {
     try {
-        const treatmentId = req.params.id;
+        const serviceId = req.params.id;
 
-        const deleteTreatment = await Treatment.destroy({
+        const deleteService = await Service.destroy({
             where: {
-                id: treatmentId
+                id: serviceId
             }
         })
 
         return res.json(
             {
                 success: true,
-                message: "Treatment deleted successfully",
-                data: deleteTreatment
+                message: "Service deleted successfully",
+                data: deleteService
             }
         );
     } catch (error) {
         return res.status(500).json(
             {
                 success: false,
-                message: "Treatment cant be deleted",
+                message: "Service cant be deleted",
                 error: error.message
             }
         )
     }
 }
 
-treatmentController.getAllTreatments = async(req, res) => {
+serviceController.getAllServices = async(req, res) => {
     try {
-        const treatment = await Treatment.findAll();
+        const service = await Service.findAll();
 
         return res.json(
             {
                 success: true,
-                message: "Get all treatment retrieved",
-                data: treatment
+                message: "Get all service retrieved",
+                data: service
             }
         )
     } catch (error) {
         return res.status(500).json(
             {
                 success: false,
-                message: "Treatment cant be retrieved",
+                message: "Service cant be retrieved",
                 error: error.message
             }
         )
     }
 }
 
-module.exports = treatmentController;
+module.exports = serviceController;
