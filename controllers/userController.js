@@ -47,21 +47,20 @@ userController.getUser = async (req, res) => {
             attributes: {
                 exclude: ['password', 'updatedAt', 'createdAt', 'role_id'],
             },
-            include: [
-                {
-                    model: UserRole,
-                    as: 'userRoles',
-                    include: [
-                        {
-                            model: Role,
-                            as: 'role',
-                            attributes: {
-                                exclude: ["updatedAt", "createdAt"],
-                            },
-                        },
-                    ],
-                },
-            ],
+            // include: [
+            //     {
+            //         model: UserRole,
+            //         // as: 'userRoles',
+            //         include: [
+            //             {
+            //                 model: Role,
+            //                 attributes: {
+            //                     exclude: ["updatedAt", "createdAt"],
+            //                 },
+            //             },
+            //         ],
+            //     },
+            // ],
         });
 
 

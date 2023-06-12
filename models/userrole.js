@@ -20,13 +20,6 @@ module.exports = (sequelize, DataTypes) => {
           models.Role,
           { 
             foreignKey: 'role_id',
-            as: 'patient'
-          });
-        models.UserRole.belongsTo(
-          models.Role,
-          {
-            foreignKey: 'role_id',
-            as: 'admin'
           });
     };
   }
