@@ -13,12 +13,18 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       models.User.belongsToMany(
-        models.Role,
-        {
-          through: 'UserRole',
-          foreignKey: 'user_id'
-        }
-      )
+        models.Role, 
+      {
+        through: models.UserRole,
+        foreignKey: 'user_id',
+      });
+      models.User.belongsToMany(
+        models.UserRole, 
+      {
+        through: models.UserRole,
+        foreignKey: 'user_id',
+        as: 'userRoles'
+      });
     }
   }
   User.init({
@@ -28,8 +34,8 @@ module.exports = (sequelize, DataTypes) => {
     nif: DataTypes.STRING,
     role_id: DataTypes.INTEGER,
     direction: DataTypes.STRING,
-    age: DataTypes.INTEGER,
-    phone: DataTypes.INTEGER
+    age: DataTypes.STRING,
+    phone: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'User',

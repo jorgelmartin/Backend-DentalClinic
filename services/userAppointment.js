@@ -1,30 +1,13 @@
-const express = require('express');
-const db = require('./db');
-const router = require('./router');
-const auth = require('./middlewares/verifyToken');
-const appointmentController = require('./controllers/appointmentController');
+/// SI no lo pones lo borras
+// //Change to sql
+// const appointmentService = {};
 
-const app = express();
-
-const PORT = 4000;
-
-app.use(express.json());
-
-// gestiona las rutas de router.js
-app.use(router);
-
-app.get('/health', auth, (req, res) => {
-    return res.send('healthy');
-});
-
-
-//TRAER TODAS LAS CITAS DE UN USUARIO // Cambiar a SQL ejem belongsTo // Include
 
 // app.get('/get-appoiment-by-user', appointmentController.getAllAppointmentByUser)
 
 // appointmentController.getAllAppointmentByUser = async(req,res) => {
 //     try {
-//         const userId = req.body.user_id;
+//         const
 
 //         const appointmentByUser = await appointment.find({
 //             user_id: userId
@@ -39,6 +22,7 @@ app.get('/health', auth, (req, res) => {
 //                 data: appointmentByUser
 //             }
 //         )
+        
 //     } catch (error) {
 //         return res.status(500).json(
 //             {
@@ -49,14 +33,3 @@ app.get('/health', auth, (req, res) => {
 //         )
 //     }
 // }
-
-db.then(() =>
-    {
-        app.listen(PORT, () => {
-            console.log('Server is running on port: ' + PORT);
-        })
-    }
-).catch((error) => {
-    console.error('Error starting server', error.message);
-})
-

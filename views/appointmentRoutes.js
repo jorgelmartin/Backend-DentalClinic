@@ -10,4 +10,5 @@ router.put('/update/:id', auth, isDentist, appointmentController.updateAppointme
 router.delete('/delete/:id', auth, isDentist, appointmentController.deleteAppointment)
 router.get('/getAll', auth, appointmentController.getAllAppointments)
 
+
 module.exports = router;

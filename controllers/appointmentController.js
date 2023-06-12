@@ -33,7 +33,32 @@ appointmentController.createAppointment = async(req, res) => {
             }
         )
     }
-}
+};
+
+
+//OJO INCLUIR EL PRECIO DESDE EL SERVICE
+
+// const price = await Service.findById(price);
+
+//Service.price(En el create)
+
+        // return res.json(
+        //     {
+        //         success: true,
+        //         message: "Appointment created",
+        //         data: newAppointment,
+
+                //OJO
+                // price: price
+                // {
+                //     patient_id: newAppointment.patient_id,
+                //     service_id: newAppointment.service_id, 
+                //     date: newAppointment.date,
+                //     hour: newAppointment.date
+                // }
+
+
+
 appointmentController.updateAppointment = async(req, res) => {
     try {
         const appointmentId = req.params.id;
