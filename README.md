@@ -1,15 +1,10 @@
-## clinicadental API project
+## Proyecto API Clínica Dental
 
 ### Sobre el proyecto
 Este proyecto requería una API funcional conectada a una base de datos de una clínica dental con al menos una relación de uno a muchos y una relación de muchos a muchos.  
 
-### Deploy 🚀
-<div align="center">
-    <a href="https://www.google.com"><strong>Url a producción </strong></a>🚀🚀🚀
-</div>
+### Tecnologías utilizadas:
 
-### Stack
-Tecnologías utilizadas:
 <div align="center">
 <a href="https://www.mongodb.com/">
     <img src= "https://seeklogo.com/images/S/sequelize-logo-9A5075DB9F-seeklogo.com.png"/>
