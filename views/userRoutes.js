@@ -5,9 +5,9 @@ const auth = require('../middlewares/verifyToken');
 
 const router = require('express').Router();
 
-router.post('/', auth, isDentist, userController.createUser)
-router.put('/:id', auth, isDentist, userController.updateUser)
-router.delete('/:id', auth, isDentist, userController.deleteUser)
-router.get('/', auth, isDentist, userController.getAllUsers)
+router.post('/create', auth, isDentist, userController.createUser)
+router.put('/update/:id', auth, isDentist, userController.updateUser)
+router.delete('/delete/:id', auth, isDentist, userController.deleteUser)
+router.get('/getAll', userController.getAllUsers)
 
 module.exports = router;

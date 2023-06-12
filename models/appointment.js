@@ -19,13 +19,13 @@ module.exports = (sequelize, DataTypes) => {
         }
       );
     }
-  }
+  };
   appointment.init({
     patient_id: DataTypes.INTEGER,
     dentist_id: DataTypes.INTEGER,
     service_id: DataTypes.INTEGER,
-    date: DataTypes.INTEGER,
-    hour: DataTypes.INTEGER
+    date: DataTypes.DATEONLY,
+    hour: DataTypes.TIME
   }, {
     sequelize,
     modelName: 'Appointment',
