@@ -6,21 +6,25 @@ const authController = {};
 
 authController.register = async (req, res) => {
     try {
-        if (req.body.password.length < 8) {
-            return res.send('Password must be longer than 8 characters');
+        if (req.body.password.length < 6) {
+            return res.send('Password must be longer than 6 characters');
         }
 
         const newPassword = bcrypt.hashSync(req.body.password, 8);
 
         const newUser = await User.create(
             {
-                name: req.body.name,
-                email: req.body.email,
-                password: newPassword,
-                role_id: req.body.role_id
+                "fullname": req.body.fullname,
+                "email":req.body.email,
+                "password": newPassword,
+                "nif": req.body.nif,
+                "direction": req.body.direction,
+                "age": req.body.age,
+                "phone": req.body.phone,
+                role_id: 3
             }
         );
-
+console.log(newUser);
         return res.send(newUser);
     } catch (error) {
         return res.send('Something went wrong creating users ' + error.message)
@@ -66,7 +70,7 @@ authController.login = async (req, res) => {
                 roleId: user.role_id,
                 email: user.email
             },
-            'secret',
+            'secreto',
             {
                 expiresIn: '3h' 
             }

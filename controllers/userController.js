@@ -1,12 +1,12 @@
 const { log } = require("console");
-const { User } = require("../models");
+const { User, Role, UserRole } = require("../models");
 const { QueryTypes } = require('sequelize');
 
 const userController = {};
 
-userController.createUser = async(req, res) => {
+userController.createUser = async (req, res) => {
     try {
-        const {fullname, email, password, nif, role_id, direction, age, phone} = req.body;
+        const { fullname, email, password, nif, role_id, direction, age, phone } = req.body;
 
         //validaciones
 
@@ -22,12 +22,12 @@ userController.createUser = async(req, res) => {
                 phone
             }
         );
-        
+
         return res.json({
             success: true,
             message: "User created",
             data: newUser
-        });       
+        });
     } catch (error) {
         return res.status(500).json(
             {
@@ -37,9 +37,53 @@ userController.createUser = async(req, res) => {
             }
         )
     }
-}
+};
 
-userController.updateUser = async(req, res) => {
+userController.getUser = async (req, res) => {
+    try {
+        const userId = req.params.id;
+
+        const user = await User.findByPk(userId, {
+            attributes: {
+                exclude: ['password', 'updatedAt', 'createdAt', 'role_id'],
+            },
+            include: [
+                {
+                    model: UserRole,
+                    as: 'userRoles',
+                    include: [
+                        {
+                            model: Role,
+                            as: 'role',
+                            attributes: {
+                                exclude: ["updatedAt", "createdAt"],
+                            },
+                        },
+                    ],
+                },
+            ],
+        });
+
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'User not found',
+            });
+        }
+
+        return res.json(user);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            message: 'Failed to get user',
+            error: error.message,
+        });
+    }
+};
+
+userController.updateUser = async (req, res) => {
     try {
         const userId = req.params.id;
 
@@ -54,7 +98,7 @@ userController.updateUser = async(req, res) => {
             );
         };
 
-        const {fullname, email, password, nif, role_id, direction, age, phone} = req.body;
+        const { fullname, email, password, nif, role_id, direction, age, phone } = req.body;
 
         const userUpdated = await User.update(
             {
@@ -92,7 +136,7 @@ userController.updateUser = async(req, res) => {
     }
 }
 
-userController.deleteUser = async(req, res) => {
+userController.deleteUser = async (req, res) => {
     try {
         const userId = req.params.id;
 
@@ -120,7 +164,7 @@ userController.deleteUser = async(req, res) => {
     }
 }
 
-userController.getAllUsers = async(req, res) => {
+userController.getAllUsers = async (req, res) => {
     try {
         const user = await User.findAll();
 
@@ -163,7 +207,7 @@ userController.getAllUsers = async(req, res) => {
 
 //             }
 //         )
-        
+
 //     }
 // }
 

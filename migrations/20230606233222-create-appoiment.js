@@ -43,10 +43,10 @@ module.exports = {
         onDelete: 'CASCADE'
       },
       date: {
-        type: Sequelize.INTEGER
+        type: Sequelize.DATEONLY
       },
       hour: {
-        type: Sequelize.INTEGER
+        type: Sequelize.TIME
       },
       createdAt: {
         allowNull: false,
