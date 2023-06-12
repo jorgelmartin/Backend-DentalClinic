@@ -18,6 +18,8 @@ module.exports = (sequelize, DataTypes) => {
           foreignKey: 'appointment_id'
         }
       );
+//       User.hasMany(Appointments, { foreignKey: 'patient_id' });
+// Appointments.belongsTo(User, { foreignKey: 'dentist_id' });
     }
   };
   appointment.init({

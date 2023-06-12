@@ -7,7 +7,7 @@ const router = require('express').Router();
 
 router.post('/create', auth, isDentist, userController.createUser)
 router.put('/update/:id', auth, isDentist, userController.updateUser)
-router.delete('/delete/:id', auth, isDentist, userController.deleteUser)
+router.delete('/delete/:id', userController.deleteUser)
 router.get('/getAll', userController.getAllUsers)
 router.get('/getUser/:id', userController.getUser);
 
