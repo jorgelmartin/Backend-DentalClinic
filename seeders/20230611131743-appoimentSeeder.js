@@ -12,14 +12,14 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-    return queryInterface.bulkInsert('appointment', [
+    return queryInterface.bulkInsert('Appointments', [
       {
         id: 1,
         patient_id: '3',
         dentist_id: '1',
         service_id:'1',
-        date: '24/06/2023',
-        hour:'14:30',
+        date: '2023-06-11',
+        hour:'14:30:00',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -28,8 +28,8 @@ module.exports = {
         patient_id: '4',
         dentist_id: '1',
         service_id:'3',
-        date: '25/02/2023',
-        hour:'10:30',
+        date: '2023-02-13',
+        hour:'10:30:00',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -38,8 +38,8 @@ module.exports = {
         patient_id: '5',
         dentist_id: '2',
         service_id:'2',
-        date: '17/01/2023',
-        hour:'12:00',
+        date: '2022-11-04',
+        hour:'12:00:00',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -48,8 +48,8 @@ module.exports = {
         patient_id: '6',
         dentist_id: '2',
         service_id:'4',
-        date: '13/06/2023',
-        hour:'13:00',
+        date: '2022-09-15',
+        hour:'09:00:00',
         createdAt: new Date(),
         updatedAt: new Date(),
       },

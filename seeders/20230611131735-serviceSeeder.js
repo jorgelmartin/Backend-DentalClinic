@@ -12,7 +12,7 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-    return queryInterface.bulkInsert('Service', [
+    return queryInterface.bulkInsert('Services', [
       {
         id: 1,
         name: 'Consulta',

@@ -13,7 +13,7 @@ module.exports = {
      * }], {});
     */
 
-    return queryInterface.bulkInsert('Role', [
+    return queryInterface.bulkInsert('Roles', [
       {
         id: 1,
         name: 'patient',
@@ -22,13 +22,13 @@ module.exports = {
       },
       {
         id: 2,
-        name: 'dentist',
+        name: 'admin',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
         id: 3,
-        name: 'boss',
+        name: 'super_admin',
         createdAt: new Date(),
         updatedAt: new Date()
       }
