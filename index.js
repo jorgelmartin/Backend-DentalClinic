@@ -13,11 +13,6 @@ app.use(express.json());
 // gestiona las rutas de router.js
 app.use(router);
 
-app.get('/health', auth, (req, res) => {
-    return res.send('healthy');
-});
-
-
 //TRAER TODAS LAS CITAS DE UN USUARIO // Cambiar a SQL ejem belongsTo // Include
 
 // app.get('/get-appoiment-by-user', appointmentController.getAllAppointmentByUser)
