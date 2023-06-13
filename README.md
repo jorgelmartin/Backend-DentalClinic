@@ -1,7 +1,7 @@
 ## Proyecto API Clínica Dental
 
 ### Sobre el proyecto
-Este proyecto requería una API funcional conectada a una base de datos de una clínica dental con al menos una relación de uno a muchos y una relación de muchos a muchos.  
+Este proyecto requería una API funcional conectada a una base de datos relaciona de una clínica dental.  
 
 ### Tecnologías utilizadas:
 
