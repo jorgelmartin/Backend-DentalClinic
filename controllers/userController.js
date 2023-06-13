@@ -1,5 +1,5 @@
 const { log } = require("console");
-const { User, Role, UserRole } = require("../models");
+const { User, Appointment, Service } = require("../models");
 const { QueryTypes } = require('sequelize');
 
 const userController = {};
@@ -47,20 +47,6 @@ userController.getUser = async (req, res) => {
             attributes: {
                 exclude: ['password', 'updatedAt', 'createdAt', 'role_id'],
             },
-            // include: [
-            //     {
-            //         model: UserRole,
-            //         // as: 'userRoles',
-            //         include: [
-            //             {
-            //                 model: Role,
-            //                 attributes: {
-            //                     exclude: ["updatedAt", "createdAt"],
-            //                 },
-            //             },
-            //         ],
-            //     },
-            // ],
         });
 
 
@@ -181,6 +167,28 @@ userController.getAllUsers = async (req, res) => {
                 error: error.message
             }
         )
+    }
+};
+
+userController.getAllAppointmentByUser = async (req, res) => {
+    try {
+        const userAppointment = await Appointment.findAll({
+            where: {
+                patient_id: req.params.id,
+            },
+            include: [
+                {
+                    model: Service,
+                    attributes: { include: ['price'] },
+                },
+
+            ],
+
+        });
+
+        return res.json(userAppointment);
+    } catch (error) {
+        return res.status(500).send(error.message);
     }
 };
 

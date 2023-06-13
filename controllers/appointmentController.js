@@ -1,10 +1,10 @@
-const { Appointment } = require('../models');
+const { Appointment, User, Service } = require('../models');
 const appointmentController = {}
 
-appointmentController.createAppointment = async(req, res) => {
+appointmentController.createAppointment = async (req, res) => {
     try {
-        
-        const { patient_id,dentist_id,service_id,date,hour } = req.body;
+
+        const { patient_id, dentist_id, service_id, date, hour } = req.body;
 
 
         const newAppointment = await Appointment.create(
@@ -42,24 +42,60 @@ appointmentController.createAppointment = async(req, res) => {
 
 //Service.price(En el create)
 
-        // return res.json(
-        //     {
-        //         success: true,
-        //         message: "Appointment created",
-        //         data: newAppointment,
+// return res.json(
+//     {
+//         success: true,
+//         message: "Appointment created",
+//         data: newAppointment,
 
-                //OJO
-                // price: price
-                // {
-                //     patient_id: newAppointment.patient_id,
-                //     service_id: newAppointment.service_id, 
-                //     date: newAppointment.date,
-                //     hour: newAppointment.date
-                // }
+//OJO
+// price: price
+// {
+//     patient_id: newAppointment.patient_id,
+//     service_id: newAppointment.service_id, 
+//     date: newAppointment.date,
+//     hour: newAppointment.date
+// }
 
+// appointmentController.getAllAppointmentByUser = async (req, res) => {
+//     try {
+//         if (!req.user || !req.user.id) {
+//             return res.status(400).json({
+//               success: false,
+//               message: 'User ID is missing',
+//             });
+//           }
+//           const userId = req.params.id;
 
+//         const appointmentByUser = await Appointment.findAll({
+//             where: {
+//                 patient_id: userId
+//             },
+//             include: [
+//                 {
+//                     model: User
+//                 },
+//                 {
+//                     model: Service
+//                 }
+//             ]
+//         });
 
-appointmentController.updateAppointment = async(req, res) => {
+//         return res.status(200).json({
+//             success: true,
+//             message: 'Appointment by user retrieved',
+//             data: appointmentByUser
+//         });
+//     } catch (error) {
+//         return res.status(500).json({
+//             success: false,
+//             message: 'Appointment cant be retrieved',
+//             error: error.message
+//         });
+//     }
+// };
+
+appointmentController.updateAppointment = async (req, res) => {
     try {
         const appointmentId = req.params.id;
 
@@ -74,7 +110,7 @@ appointmentController.updateAppointment = async(req, res) => {
             );
         };
 
-        const { patient_id,dentist_id,service_id,date,hour } = req.body;
+        const { patient_id, dentist_id, service_id, date, hour } = req.body;
 
         const appointmentUpdated = await Appointment.update(
             {
@@ -109,7 +145,7 @@ appointmentController.updateAppointment = async(req, res) => {
     }
 }
 
-appointmentController.deleteAppointment = async(req, res) => {
+appointmentController.deleteAppointment = async (req, res) => {
     try {
         const appointmentId = req.params.id;
 
@@ -137,7 +173,7 @@ appointmentController.deleteAppointment = async(req, res) => {
     }
 }
 
-appointmentController.getAllAppointments = async(req, res) => {
+appointmentController.getAllAppointments = async (req, res) => {
     try {
         const appointment = await Appointment.findAll();
 

@@ -23,7 +23,6 @@ module.exports = (sequelize, DataTypes) => {
       {
         through: models.UserRole,
         foreignKey: 'user_id',
-        as: 'userRoles'
       });
     }
   }
