@@ -1,13 +1,13 @@
 
 const roleController = require('../controllers/roleController');
-const isDentist = require('../middlewares/verifyDentist.js');
+const isAdmin = require('../middlewares/verifyDentist.js');
 const auth = require('../middlewares/verifyToken');
 
 const router = require('express').Router();
 
-router.post('/create', auth, isDentist, roleController.createRole)
-router.put('/update/:id', auth, isDentist, roleController.updateRole)
-router.delete('/delete/:id', auth, isDentist, roleController.deleteRole)
+router.post('/create', auth, isAdmin, roleController.createRole)
+router.put('/update/:id', auth, isAdmin, roleController.updateRole)
+router.delete('/delete/:id', auth, isAdmin, roleController.deleteRole)
 router.get('/getAll', auth, roleController.getAllRoles)
 
 module.exports = router;
