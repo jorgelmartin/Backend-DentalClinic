@@ -5,7 +5,7 @@ const auth = require('../middlewares/verifyToken');
 
 const router = require('express').Router();
 
-router.post('/create', appointmentController.createAppointment)
+router.post('/create/:id', appointmentController.createAppointment)
 router.put('/update/:id', appointmentController.updateAppointment)
 router.delete('/delete/:id', appointmentController.deleteAppointment)
 router.get('/getAll', appointmentController.getAllAppointments)
