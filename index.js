@@ -2,7 +2,6 @@ const express = require('express');
 const db = require('./db');
 const router = require('./router');
 const auth = require('./middlewares/verifyToken');
-const appointmentController = require('./controllers/appointmentController');
 
 const app = express();
 

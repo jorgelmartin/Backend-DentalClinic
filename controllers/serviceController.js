@@ -1,5 +1,6 @@
 const { Service } = require("../models");
 const { QueryTypes } = require('sequelize');
+const jwt = require('jsonwebtoken');
 
 
 const serviceController = {};

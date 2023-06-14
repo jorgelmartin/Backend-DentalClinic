@@ -1,4 +1,5 @@
 const { Appointment, User, Service } = require('../models');
+const jwt = require('jsonwebtoken');
 const appointmentController = {}
 
 appointmentController.createAppointment = async (req, res) => {
