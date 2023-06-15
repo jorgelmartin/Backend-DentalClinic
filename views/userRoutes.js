@@ -8,6 +8,6 @@ router.put('/update/:id', auth, userController.updateUser)
 router.delete('/delete/:id', auth, userController.deleteUser)
 router.get('/getAll', auth, isAdmin, userController.getAllUsers)
 router.get('/getUser/:id', auth, userController.getUser)
-router.get('/getAll/:id', userController.getAllAppointmentsByUser)
+router.get('/getAll/:id', auth, userController.getAllAppointmentsByUser)
 
 module.exports = router;

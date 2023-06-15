@@ -24,7 +24,7 @@ module.exports = {
       {
         id: 2,
         name: 'Dental cleaning',
-        price: '40.00',
+        price: '40',
         duration: '30min',
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -32,7 +32,7 @@ module.exports = {
       {
         id: 3,
         name: 'Teeth whitening',
-        price: '100.00',
+        price: '100',
         duration: '45min',
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -40,7 +40,7 @@ module.exports = {
       {
         id: 4,
         name: 'Tooth extraction',
-        price: '49.99',
+        price: '49',
         duration: '30min',
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -48,7 +48,7 @@ module.exports = {
       {
         id: 5,
         name: 'Dental implants',
-        price: '120.99',
+        price: '120',
         duration: '60min',
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -56,7 +56,7 @@ module.exports = {
       {
         id: 6,
         name: 'Dental prosthetics',
-        price: '79.99',
+        price: '79',
         duration: '50min',
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -64,7 +64,7 @@ module.exports = {
       {
         id: 7,
         name: 'Root canal treatment',
-        price: '50.00',
+        price: '50',
         duration: '60min',
         createdAt: new Date(),
         updatedAt: new Date(),

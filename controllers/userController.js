@@ -1,44 +1,9 @@
-const { log } = require("console");
+
 const { User, Appointment, Service } = require("../models");
 const { QueryTypes } = require('sequelize');
 // const jwt = require('jsonwebtoken');
 
 const userController = {};
-
-userController.createUser = async (req, res) => {
-    try {
-        const { fullname, email, password, nif, role_id, direction, age, phone } = req.body;
-
-        //validaciones
-
-        const newUser = await User.create(
-            {
-                fullname,
-                email,
-                password,
-                nif,
-                role_id,
-                direction,
-                age,
-                phone
-            }
-        );
-
-        return res.json({
-            success: true,
-            message: "User created",
-            data: newUser
-        });
-    } catch (error) {
-        return res.status(500).json(
-            {
-                success: false,
-                message: "User cant be created",
-                error: error
-            }
-        )
-    }
-};
 
 userController.getUser = async (req, res) => {
     try {
@@ -115,7 +80,7 @@ userController.updateUser = async (req, res) => {
             {
                 success: false,
                 message: "User cant be updated",
-                error: error
+                error: error.message
             }
         )
     }
@@ -173,6 +138,7 @@ userController.getAllUsers = async (req, res) => {
 
 userController.getAllAppointmentsByUser = async (req, res) => {
     try {
+
         const userAppointment = await Appointment.findAll({
             where: {
                 patient_id: req.params.id,

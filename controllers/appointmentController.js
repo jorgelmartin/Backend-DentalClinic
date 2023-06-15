@@ -1,4 +1,5 @@
 const { Appointment, User, Service } = require('../models');
+const {role_id, user_id} = require('../models/user');
 const jwt = require('jsonwebtoken');
 const appointmentController = {}
 
@@ -39,7 +40,7 @@ appointmentController.createAppointment = async (req, res) => {
 
 appointmentController.updateAppointment = async (req, res) => {
     try {
-        const appointmentId = req.params.id;
+        const appointmentId = req.body.id;
 
         const appointment = await Appointment.findByPk(appointmentId);
 
@@ -65,6 +66,7 @@ appointmentController.updateAppointment = async (req, res) => {
             {
                 where: {
                     id: appointmentId
+
                 }
             }
         )
@@ -76,7 +78,7 @@ appointmentController.updateAppointment = async (req, res) => {
                 data: appointmentUpdated
             }
         );
-    } catch (error) {
+    } catch (error) {console.log(error,message)
         return res.status(500).json(
             {
                 success: false,
