@@ -1,6 +1,6 @@
 ## Backend Clínica Dental
 
-## Objetivo
+### Objetivo
 Este proyecto requería una base de datos relacional de una clínica dental utilizando Express y Sequelize.
 
 ### Sobre el proyecto
@@ -8,8 +8,7 @@ Basandonos en el Backend para una Clínica Dental, disponemos de usuarios pacien
 
 Como admin/dentistas, se tendrá la posibilidad de ver todos los pacientes registrados y tambien todas las citas, mientras que los pacientes podrán ver su historial de citas.
 
-## Stack
-Tecnologías utilizadas:
+### Tecnologías utilizadas:
 <div align="center">
         <a href="https://www.sequelize.org/">
         <img src= "https://img.shields.io/badge/sequelize-3C76C3?style=for-the-badge&logo=sequelize&logoColor=white"/>
@@ -49,6 +48,107 @@ Tecnologías utilizadas:
 5. Ejecutamos los seeders ` $ npx sequelize db:seed:all ` 
 6. Conectamos el servidor` $ npm run dev ` 
 
+### Endpoints
+<details>
+<summary>Endpoints</summary>
+
+- AUTH
+    - REGISTER
+
+            POST http://localhost:4000/auth/register
+        body:
+        ``` js
+            {
+                "fullname":"Maria",
+                "email":"hala@maria.com",
+                "password": "12345678",
+                "nif": "12345648Y",
+                "direction": "C/ no existe 23",
+                "age": "34",
+                "phone": "655613298"
+            }
+        ```
+
+    - LOGIN
+
+            POST http://localhost:4000/auth/login
+        body:
+        ``` js
+            {
+                "email":"roma@roma.com",
+                "password": "123456"
+            }
+        ```
+
+- ADMIN
+    - GET ALL APPOINTMENTS
+
+            GET http://localhost:4000/appointment/getAll
+
+    - GET ALL USERS
+
+            GET http://localhost:4000/user/getAll
+
+- PACIENTES/USUARIOS
+
+    -GET ALL SERVICES 
+
+            GET http://localhost:4000/service/getAll
+
+    - CREATE AN APPOINTMENT 
+
+            POST http://localhost:4000/appointment/create
+        ``` js
+            {
+                "patient_id": "3",
+                "dentist_id": "1",
+                "service_id": "3",
+                "date": "2023-03-02",
+                "hour": "14:35:00"
+            }
+        ```
+    - GET ALL MY APPOINTMENTS (AS USER)
+
+            PUT http://localhost:4000/user/getAll/4
+
+    - UPDATE APPOINTMENT (AS PATIENT)
+
+            PUT http://localhost:4000/appointment/update/1
+        ``` js
+            {
+                "patient_id": "4",
+                "dentist_id": "3",
+                "service_id": "5",
+                "date": "2023-03-02",
+                "hour": "14:35:00"
+            }
+        ```
+
+    - DELETE APPOINTMENT (ONLY YOURS)
+
+            DELETE http://localhost:4000/appointment/delete/6
+
+    - GET MY PROFILE
+
+            GET http://localhost:4000/user/getUser/5
+
+    - UPDATE MY PROFILE
+
+            PUT localhost:4000/user/update/13
+        ``` js
+            {
+                "patient_id": "4",
+                "dentist_id": "3",
+                "service_id": "5",
+                "date": "2023-03-02",
+                "hour": "14:35:00"
+            }
+        ```
+            
+    - DELETE MY PROFILE
+    
+            DELETE http://localhost:4000/user/delete/5
+</details>
 
 ### Uso de la API
 
