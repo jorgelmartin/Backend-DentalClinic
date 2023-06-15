@@ -1,15 +1,15 @@
+//REQUIRE EXPRESS / DB / ROUTER
 const express = require('express');
 const db = require('./db');
 const router = require('./router');
-const auth = require('./middlewares/verifyToken');
 
 const app = express();
 
+//PORT
 const PORT = 4000;
 
 app.use(express.json());
 
-// gestiona las rutas de router.js
 app.use(router);
 
 db.then(() =>

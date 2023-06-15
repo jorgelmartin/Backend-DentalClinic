@@ -2,12 +2,11 @@ const { Service } = require("../models");
 
 const serviceController = {};
 
+//CREATE SERVICE/TREATMENT
 serviceController.createService = async(req, res) => {
     try {
         const { name,price,duration } = req.body;
-
         //validaciones
-
         const newService = await Service.create(
             {
                 name,
@@ -15,7 +14,6 @@ serviceController.createService = async(req, res) => {
                 duration
             }
         );
-        
         return res.json({
             success: true,
             message: "Service created",
@@ -32,12 +30,11 @@ serviceController.createService = async(req, res) => {
     }
 }
 
+//UPDATE SERVICE/TREATMENT
 serviceController.updateService = async(req, res) => {
     try {
         const serviceId = req.params.id;
-
         const service = await Service.findByPk(serviceId);
-
         if (!service) {
             return res.json(
                 {
@@ -46,9 +43,7 @@ serviceController.updateService = async(req, res) => {
                 }
             );
         };
-
         const { name,price,duration } = req.body;
-
         const serviceUpdated = await Service.update(
             {
                 name,
@@ -61,7 +56,6 @@ serviceController.updateService = async(req, res) => {
                 }
             }
         )
-
         return res.json(
             {
                 success: true,
@@ -80,10 +74,10 @@ serviceController.updateService = async(req, res) => {
     }
 }
 
+//DELETE SERVICE/TREATMENT
 serviceController.deleteService = async(req, res) => {
     try {
         const serviceId = req.params.id;
-
         const deleteService = await Service.destroy({
             where: {
                 id: serviceId
@@ -107,6 +101,7 @@ serviceController.deleteService = async(req, res) => {
     }
 }
 
+//GET ALL SERVICE/TREATMENT
 serviceController.getAllServices = async(req, res) => {
     try {
         const service = await Service.findAll();

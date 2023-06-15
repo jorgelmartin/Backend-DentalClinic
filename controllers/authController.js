@@ -10,6 +10,16 @@ authController.register = async (req, res) => {
         if (req.body.password.length < 6) {
             return res.send('Password must be longer than 6 characters');
         }
+        const validateEmail = (email) => {
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            return emailRegex.test(email);
+        };
+        if (!validateEmail(req.body.email)) {
+            return res.status(400).json({
+                success: false,
+                message: "Email not valid",
+            });
+        }
         const newPassword = bcrypt.hashSync(req.body.password, 8);
         const newUser = await User.create(
             {
@@ -23,7 +33,6 @@ authController.register = async (req, res) => {
                 role_id: 3
             }
         );
-console.log(newUser);
         return res.send(newUser);
     } catch (error) {
         return res.send('Something went wrong creating users ' + error.message)
@@ -49,7 +58,7 @@ authController.login = async (req, res) => {
             )
         }
         //Verify password
-        const isMatch = bcrypt.compareSync(password, user.password); // true      
+        const isMatch = bcrypt.compareSync(password, user.password);
         if (!isMatch) {
             return res.json(
                 {

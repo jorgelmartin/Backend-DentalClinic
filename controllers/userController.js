@@ -126,7 +126,11 @@ userController.deleteUser = async (req, res) => {
 //GET ALL THE USERS
 userController.getAllUsers = async (req, res) => {
     try {
-        const user = await User.findAll();
+        const user = await User.findAll({
+            attributes: {
+                exclude: ['password', 'updatedAt', 'createdAt'],
+            },
+        });
         return res.json(
             {
                 success: true,

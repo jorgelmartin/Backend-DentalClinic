@@ -2,6 +2,7 @@ const { Role } = require("../models");
 
 const roleController = {};
 
+//CREATE ROLE
 roleController.createRole = async(req, res) => {
     try {
         const { name } = req.body.name;
@@ -26,6 +27,7 @@ roleController.createRole = async(req, res) => {
     }
 }
 
+//UPDATE ROLE
 roleController.updateRole = async(req, res) => {
     try {
         const roleId = req.params.id;
@@ -67,6 +69,7 @@ roleController.updateRole = async(req, res) => {
     }
 }
 
+//DELETE ROLE
 roleController.deleteRole = async(req, res) => {
     try {
         const roleId = req.params.id;
@@ -93,6 +96,7 @@ roleController.deleteRole = async(req, res) => {
     }
 }
 
+//GET ALL ROLEs
 roleController.getAllRoles = async(req, res) => {
     try {
         const roles = await Role.findAll();
