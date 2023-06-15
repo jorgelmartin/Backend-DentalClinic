@@ -1,7 +1,4 @@
 const { Service } = require("../models");
-const { QueryTypes } = require('sequelize');
-
-
 
 const serviceController = {};
 

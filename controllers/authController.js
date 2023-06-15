@@ -4,14 +4,13 @@ const jwt = require('jsonwebtoken');
 
 const authController = {};
 
+//REGISTER
 authController.register = async (req, res) => {
     try {
         if (req.body.password.length < 6) {
             return res.send('Password must be longer than 6 characters');
         }
-
         const newPassword = bcrypt.hashSync(req.body.password, 8);
-
         const newUser = await User.create(
             {
                 "fullname": req.body.fullname,
@@ -30,11 +29,10 @@ console.log(newUser);
         return res.send('Something went wrong creating users ' + error.message)
     }
 }
-
+//LOGIN
 authController.login = async (req, res) => {
     try {
         const { email, password } = req.body;
-
         const user = await User.findOne(
             {
                 where: {
@@ -42,7 +40,6 @@ authController.login = async (req, res) => {
                 }
             }
         );
-
         if (!user) {
             return res.json(
                 {
@@ -51,10 +48,8 @@ authController.login = async (req, res) => {
                 }
             )
         }
-
-        //Validamos password
+        //Verify password
         const isMatch = bcrypt.compareSync(password, user.password); // true      
-
         if (!isMatch) {
             return res.json(
                 {
@@ -63,7 +58,6 @@ authController.login = async (req, res) => {
                 }
             )
         }
-
         const token = jwt.sign(
             { 
                 userId: user.id,

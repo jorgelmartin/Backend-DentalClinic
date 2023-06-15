@@ -1,18 +1,15 @@
 const { Role } = require("../models");
-const { QueryTypes } = require('sequelize');
 
 const roleController = {};
 
 roleController.createRole = async(req, res) => {
     try {
         const { name } = req.body.name;
-
         const newRole = await Role.create(
             {
                 name,
             }
         );
-        
         return res.json({
             success: true,
             message: "Role created",
@@ -32,9 +29,7 @@ roleController.createRole = async(req, res) => {
 roleController.updateRole = async(req, res) => {
     try {
         const roleId = req.params.id;
-
         const role = await Role.findByPk(roleId);
-
         if (!role) {
             return res.json(
                 {
@@ -43,9 +38,7 @@ roleController.updateRole = async(req, res) => {
                 }
             );
         };
-
         const { name } = req.body.name;
-
         const roleUpdated = await Role.update(
             {
                 name
@@ -56,7 +49,6 @@ roleController.updateRole = async(req, res) => {
                 }
             }
         )
-
         return res.json(
             {
                 success: true,
@@ -78,13 +70,11 @@ roleController.updateRole = async(req, res) => {
 roleController.deleteRole = async(req, res) => {
     try {
         const roleId = req.params.id;
-
         const deleteRole = await Role.destroy({
             where: {
                 id: roleId
             }
         })
-
         return res.json(
             {
                 success: true,
@@ -106,7 +96,6 @@ roleController.deleteRole = async(req, res) => {
 roleController.getAllRoles = async(req, res) => {
     try {
         const roles = await Role.findAll();
-
         return res.json(
             {
                 success: true,

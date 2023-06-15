@@ -1,27 +1,24 @@
-const { Appointment, User, Service } = require('../models');
+const { Appointment, Service } = require('../models');
 const appointmentController = {}
 
 //CREATE APPOINTMENT FUNCTION
-
 appointmentController.createAppointment = async (req, res) => {
     try {
         const { patient_id, dentist_id, service_id, date, hour } = req.body;
         const userId = String(req.user_id);
-        // Verifica si el usuario actual coincide con el patient_id proporcionado
-        console.log("req.user_id", req.user_id);
+        // Check if the current user matches the provided patient_id
         if (patient_id !== userId) {
             return res.json({
                 success: false,
                 message: "You are not authorized to create an appointment for this patient",
             });
         }
-        // Verifica si ya existe una cita para el paciente actual
+        // Checks if an appointment already exists for the current patient
         const existingAppointment = await Appointment.findOne({
             where: {
                 patient_id: req.user_id
             }
         });
-        
         if (existingAppointment) {
             return res.json({
                 success: false,
@@ -35,7 +32,6 @@ appointmentController.createAppointment = async (req, res) => {
             date,
             hour
         });
-        
         return res.json({
             success: true,
             message: "Appointment created",
@@ -52,12 +48,11 @@ appointmentController.createAppointment = async (req, res) => {
 };
 
 //UPDATE APPOINTMENT FUNCTION
-
 appointmentController.updateAppointment = async (req, res) => {
     try {
         const appointmentId = req.params.id;
         const userId = req.user_id;
-        // Obtén el registro de la cita utilizando el ID de la cita y el ID del usuario
+
         const appointment = await Appointment.findOne({
             where: {
                 id: appointmentId,
@@ -149,7 +144,14 @@ appointmentController.deleteAppointment = async (req, res) => {
 //GET ALL APPOINTMENT FUNCTION
 appointmentController.getAllAppointments = async (req, res) => {
     try {
-        const appointment = await Appointment.findAll();
+        const appointment = await Appointment.findAll({
+            include: [
+                {
+                    model: Service,
+                    attributes: ['price'],
+                },
+            ],
+        });
         return res.json(
             {
                 success: true,

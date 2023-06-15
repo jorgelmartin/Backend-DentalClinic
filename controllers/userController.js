@@ -1,28 +1,31 @@
 
 const { User, Appointment, Service } = require("../models");
-const { QueryTypes } = require('sequelize');
-// const jwt = require('jsonwebtoken');
 
 const userController = {};
 
+//GET PROFILE 
 userController.getUser = async (req, res) => {
     try {
-        const userId = req.params.id;
-
-        const user = await User.findByPk(userId, {
+        const userId = String(req.user_id);
+        const { id } = req.params;
+        //Verify user
+        if (id !== userId) {
+            return res.status(403).json({
+                success: false,
+                message: "You are not authorized to get this profile",
+            });
+        }
+        const user = await User.findByPk(id, {
             attributes: {
                 exclude: ['password', 'updatedAt', 'createdAt', 'role_id'],
             },
         });
-
-
         if (!user) {
             return res.status(404).json({
                 success: false,
                 message: 'User not found',
             });
         }
-
         return res.json(user);
     } catch (error) {
         console.error(error);
@@ -34,12 +37,11 @@ userController.getUser = async (req, res) => {
     }
 };
 
+//UPDATE USER
 userController.updateUser = async (req, res) => {
     try {
         const userId = req.params.id;
-
         const user = await User.findByPk(userId);
-
         if (!user) {
             return res.json(
                 {
@@ -48,9 +50,7 @@ userController.updateUser = async (req, res) => {
                 }
             );
         };
-
         const { fullname, email, password, nif, direction, age, phone } = req.body;
-
         const userUpdated = await User.update(
             {
                 fullname,
@@ -67,7 +67,6 @@ userController.updateUser = async (req, res) => {
                 }
             }
         )
-
         return res.json(
             {
                 success: true,
@@ -86,38 +85,48 @@ userController.updateUser = async (req, res) => {
     }
 }
 
+//DELETE USER
 userController.deleteUser = async (req, res) => {
     try {
-        const userId = req.params.id;
-
-        const deleteUser = await User.destroy({
-            where: {
-                id: userId
-            }
-        })
-
-        return res.json(
-            {
-                success: true,
-                message: "User deleted successfully",
-                data: deleteUser
-            }
-        );
-    } catch (error) {
-        return res.status(500).json(
-            {
+        const userId = String(req.user_id);
+        const { id } = req.params;
+        // Verify user
+        if (id !== userId) {
+            return res.status(403).json({
                 success: false,
-                message: "User cant be deleted",
-                error: error
+                message: "You are not authorized to delete this user",
+            });
+        }
+        const deletedUser = await User.destroy({
+            where: {
+                id: id
             }
-        )
+        });
+        if (deletedUser === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'User not found',
+            });
+        }
+        return res.json({
+            success: true,
+            message: "User deleted successfully",
+            data: deletedUser
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            message: 'Failed to delete user',
+            error: error.message,
+        });
     }
-}
+};
 
+//GET ALL THE USERS
 userController.getAllUsers = async (req, res) => {
     try {
         const user = await User.findAll();
-
         return res.json(
             {
                 success: true,
@@ -135,10 +144,18 @@ userController.getAllUsers = async (req, res) => {
         )
     }
 };
-
+//GET ALL APPOINTMENTS BY USER
 userController.getAllAppointmentsByUser = async (req, res) => {
     try {
-
+        const userId = String(req.user_id);
+        const { id } = req.params;
+        //Verify user
+        if (id !== userId) {
+            return res.status(403).json({
+                success: false,
+                message: "You are not authorized to get this profile",
+            });
+        }
         const userAppointment = await Appointment.findAll({
             where: {
                 patient_id: req.params.id,
