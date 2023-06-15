@@ -8,7 +8,7 @@ const router = require('express').Router();
 router.post('/create', auth, appointmentController.createAppointment)
 router.put('/update/:id', auth, appointmentController.updateAppointment)
 router.delete('/delete/:id', auth, appointmentController.deleteAppointment)
-router.get('/getAll',  appointmentController.getAllAppointments)
+router.get('/getAll', auth, appointmentController.getAllAppointments)
 
 
 module.exports = router;

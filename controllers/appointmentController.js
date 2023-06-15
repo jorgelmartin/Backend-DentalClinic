@@ -6,32 +6,48 @@ const appointmentController = {}
 appointmentController.createAppointment = async (req, res) => {
     try {
         const { patient_id, dentist_id, service_id, date, hour } = req.body;
-        // patient_id:req.user_id,
-        const newAppointment = await Appointment.create(
-            {
-                patient_id,
-                dentist_id,
-                service_id,
-                date,
-                hour
-            }
-        );
-
-        return res.json(
-            {
-                success: true,
-                message: "Appointment created",
-                data: newAppointment
-            }
-        );
-    } catch (error) {console.log(error.message);
-        return res.status(500).json(
-            {
+        const userId = String(req.user_id);
+        // Verifica si el usuario actual coincide con el patient_id proporcionado
+        console.log("req.user_id", req.user_id);
+        if (patient_id !== userId) {
+            return res.json({
                 success: false,
-                message: "Appointment cant be created",
-                error: error.message
+                message: "You are not authorized to create an appointment for this patient",
+            });
+        }
+        // Verifica si ya existe una cita para el paciente actual
+        const existingAppointment = await Appointment.findOne({
+            where: {
+                patient_id: req.user_id
             }
-        )
+        });
+        
+        if (existingAppointment) {
+            return res.json({
+                success: false,
+                message: "An appointment already exists for this patient. Please delete the existing appointment before creating a new one.",
+            });
+        }
+        const newAppointment = await Appointment.create({
+            patient_id,
+            dentist_id,
+            service_id,
+            date,
+            hour
+        });
+        
+        return res.json({
+            success: true,
+            message: "Appointment created",
+            data: newAppointment
+        });
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({
+            success: false,
+            message: "Appointment could not be created",
+            error: error.message
+        });
     }
 };
 
@@ -39,16 +55,22 @@ appointmentController.createAppointment = async (req, res) => {
 
 appointmentController.updateAppointment = async (req, res) => {
     try {
-        const appointmentId = req.body.id;
-        const appointment = await Appointment.findByPk(appointmentId);
+        const appointmentId = req.params.id;
+        const userId = req.user_id;
+        // Obtén el registro de la cita utilizando el ID de la cita y el ID del usuario
+        const appointment = await Appointment.findOne({
+            where: {
+                id: appointmentId,
+                patient_id: userId
+            }
+        });
+        // Verifica si el registro de la cita existe y si el usuario tiene el rol correcto
         if (!appointment) {
-            return res.json(
-                {
-                    success: true,
-                    message: "Appointment doesnt exists"
-                }
-            );
-        };
+            return res.json({
+                success: false,
+                message: "Appointment not found or you don't have permission to upddate it",
+            });
+        }
         const { patient_id, dentist_id, service_id, date, hour } = req.body;
         const appointmentUpdated = await Appointment.update(
             {
