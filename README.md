@@ -6,7 +6,7 @@ Este proyecto requería una base de datos relacional de una clínica dental util
 ### Sobre el proyecto
 Basandonos en el Backend para una Clínica Dental, disponemos de usuarios pacientes y admin/dentistas. Por cuestiones de seguridad, todos los usuarios que se registren tendrán el rol de pacientes. Un vez registrados se tendrá la posibilidad de crear, modificar y borrar citas propias, también se podrá ver, modificar o borrar el perfil.
 
-Como admin/dentistas, se tendrá la posibilidad de ver todos los pacientes registrados y tambien todas las citas, mientras que los pacientes podrán ver su historial de citas.
+Como admin/dentistas, se tendrá la posibilidad de ver todos los pacientes registrados y tambien todas las citas, mientras que los pacientes podrán ver su historial de citas junto con el precio y el id del tratamiento asociado.
 
 ### Tecnologías utilizadas:
 <div align="center">
@@ -91,7 +91,7 @@ Como admin/dentistas, se tendrá la posibilidad de ver todos los pacientes regis
 
 - PACIENTES/USUARIOS
 
-    -GET ALL SERVICES 
+    - GET ALL SERVICES 
 
             GET http://localhost:4000/service/getAll
 
