@@ -1,6 +1,8 @@
 const { Appointment, User, Service } = require('../models');
 const appointmentController = {}
 
+//CREATE APPOINTMENT FUNCTION
+
 appointmentController.createAppointment = async (req, res) => {
     try {
         const { patient_id, dentist_id, service_id, date, hour } = req.body;
@@ -33,13 +35,12 @@ appointmentController.createAppointment = async (req, res) => {
     }
 };
 
+//UPDATE APPOINTMENT FUNCTION
 
 appointmentController.updateAppointment = async (req, res) => {
     try {
         const appointmentId = req.body.id;
-
         const appointment = await Appointment.findByPk(appointmentId);
-
         if (!appointment) {
             return res.json(
                 {
@@ -48,9 +49,7 @@ appointmentController.updateAppointment = async (req, res) => {
                 }
             );
         };
-
         const { patient_id, dentist_id, service_id, date, hour } = req.body;
-
         const appointmentUpdated = await Appointment.update(
             {
                 patient_id,
@@ -62,11 +61,9 @@ appointmentController.updateAppointment = async (req, res) => {
             {
                 where: {
                     id: appointmentId
-
                 }
             }
         )
-
         return res.json(
             {
                 success: true,
@@ -83,18 +80,32 @@ appointmentController.updateAppointment = async (req, res) => {
             }
         )
     }
-}
+};
 
+//DELETE APPOINTMENT FUNCTION
 appointmentController.deleteAppointment = async (req, res) => {
     try {
         const appointmentId = req.params.id;
-
+        const userId = req.user_id;
+        // Obtén el registro de la cita utilizando el ID de la cita y el ID del usuario
+        const appointment = await Appointment.findOne({
+            where: {
+                id: appointmentId,
+                patient_id: userId
+            }
+        });
+        // Verifica si el registro de la cita existe y si el usuario tiene el rol correcto
+        if (!appointment) {
+            return res.json({
+                success: false,
+                message: "Appointment not found or you don't have permission to delete it",
+            });
+        }
         const deleteAppointment = await Appointment.destroy({
             where: {
                 id: appointmentId
             }
         })
-
         return res.json(
             {
                 success: true,
@@ -111,12 +122,12 @@ appointmentController.deleteAppointment = async (req, res) => {
             }
         )
     }
-}
+};
 
+//GET ALL APPOINTMENT FUNCTION
 appointmentController.getAllAppointments = async (req, res) => {
     try {
         const appointment = await Appointment.findAll();
-
         return res.json(
             {
                 success: true,
