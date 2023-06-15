@@ -1,7 +1,6 @@
 const { Role } = require("../models");
 const { QueryTypes } = require('sequelize');
 
-
 const roleController = {};
 
 roleController.createRole = async(req, res) => {

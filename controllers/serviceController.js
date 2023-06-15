@@ -1,6 +1,6 @@
 const { Service } = require("../models");
 const { QueryTypes } = require('sequelize');
-const jwt = require('jsonwebtoken');
+
 
 
 const serviceController = {};
@@ -92,7 +92,6 @@ serviceController.deleteService = async(req, res) => {
                 id: serviceId
             }
         })
-
         return res.json(
             {
                 success: true,
@@ -114,7 +113,6 @@ serviceController.deleteService = async(req, res) => {
 serviceController.getAllServices = async(req, res) => {
     try {
         const service = await Service.findAll();
-
         return res.json(
             {
                 success: true,
