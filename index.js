@@ -1,15 +1,16 @@
 //REQUIRE EXPRESS / DB / ROUTER
 const express = require('express');
+const cors = require('cors');
 const db = require('./db');
 const router = require('./router');
 
 const app = express();
-
+app.use(cors());
 //PORT
 const PORT = 4000;
 
 app.use(express.json());
-
+app.use(cors());
 app.use(router);
 
 db.then(() =>
