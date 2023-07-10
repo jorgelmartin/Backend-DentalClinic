@@ -5,13 +5,14 @@ const serviceController = {};
 //CREATE SERVICE/TREATMENT
 serviceController.createService = async(req, res) => {
     try {
-        const { name,price,duration } = req.body;
+        const { name,price,duration,image } = req.body;
         //validaciones
         const newService = await Service.create(
             {
                 name,
                 price,
-                duration
+                duration,
+                image
             }
         );
         return res.json({
@@ -43,12 +44,13 @@ serviceController.updateService = async(req, res) => {
                 }
             );
         };
-        const { name,price,duration } = req.body;
+        const { name,price,duration,image } = req.body;
         const serviceUpdated = await Service.update(
             {
                 name,
                 price,
-                duration
+                duration,
+                image
             },
             {
                 where: {

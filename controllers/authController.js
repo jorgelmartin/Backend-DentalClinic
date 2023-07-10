@@ -23,11 +23,12 @@ authController.register = async (req, res) => {
         const newPassword = bcrypt.hashSync(req.body.password, 8);
         const newUser = await User.create(
             {
-                "fullname": req.body.fullname,
+                "name": req.body.name,
+                "lastname": req.body.lastname,
                 "email":req.body.email,
                 "password": newPassword,
-                "nif": req.body.nif,
-                "direction": req.body.direction,
+                "dni": req.body.dni,
+                "address": req.body.address,
                 "age": req.body.age,
                 "phone": req.body.phone,
                 role_id: 3
@@ -35,7 +36,13 @@ authController.register = async (req, res) => {
         );
         return res.send(newUser);
     } catch (error) {
-        return res.send('Something went wrong creating users ' + error.message)
+        console.log(error);
+        return res.status(500).json(
+            {
+                success: false,
+                message: `Something went wrong creating users ${error.message}`
+            }
+        )
     }
 }
 //LOGIN
@@ -77,13 +84,14 @@ authController.login = async (req, res) => {
             {
                 expiresIn: '3h' 
             }
-        );  
+        );
         
         return res.json(
             {
                 success: true,
                 message: "User logged",
-                token: token
+                token: token,
+                user: user
             }
         );
     } catch (error) {

@@ -1,23 +1,24 @@
 
 const { User, Appointment, Service } = require("../models");
-
+const models = require('../models/index');
+const bcrypt = require('bcrypt');
 const userController = {};
 
 //GET PROFILE 
 userController.getUser = async (req, res) => {
     try {
-        const userId = String(req.user_id);
-        const { id } = req.params;
-        //Verify user
-        if (id !== userId) {
-            return res.status(403).json({
-                success: false,
-                message: "You are not authorized to get this profile",
-            });
-        }
-        const user = await User.findByPk(id, {
+        // const userId = String(req.user_id);
+        // const { id } = req.params;
+        // //Verify user
+        // if (id !== userId) {
+        //     return res.status(403).json({
+        //         success: false,
+        //         message: "You are not authorized to get this profile",
+        //     });
+        // }
+        const user = await User.findByPk(req.user_id, {
             attributes: {
-                exclude: ['password', 'updatedAt', 'createdAt', 'role_id'],
+                exclude: ['updatedAt', 'createdAt', 'role_id'],
             },
         });
         if (!user) {
@@ -40,24 +41,27 @@ userController.getUser = async (req, res) => {
 //UPDATE USER
 userController.updateUser = async (req, res) => {
     try {
-        const userId = req.params.id;
-        const user = await User.findByPk(userId);
-        if (!user) {
-            return res.json(
-                {
-                    success: true,
-                    message: "User doesnt exists"
-                }
-            );
-        };
-        const { fullname, email, password, nif, direction, age, phone } = req.body;
+        const userId = req.user_id;
+        // const user = await User.findByPk(userId);
+        // if (!user) {
+        //     return res.json(
+        //         {
+        //             success: true,
+        //             message: "User doesnt exists"
+        //         }
+        //     );
+        // };
+
+        const newPassword = bcrypt.hashSync(req.body.password, 8);
+        const { name, lastname, email, password, dni, address, age, phone } = req.body;
         const userUpdated = await User.update(
             {
-                fullname,
+                name,
+                lastname,
                 email,
-                password,
-                nif,
-                direction,
+                password: newPassword,
+                dni,
+                address,
                 age,
                 phone
             },
@@ -149,32 +153,55 @@ userController.getAllUsers = async (req, res) => {
     }
 };
 //GET ALL APPOINTMENTS BY USER
+// userController.getAllAppointmentsByUser = async (req, res) => {
+//     try {
+//         // const userId = String(req.user_id);
+//         // const { id } = req.params;
+//         // //Verify user
+//         // if (id !== userId) {
+//         //     return res.status(403).json({
+//         //         success: false,
+//         //         message: "You are not authorized to get this profile",
+//         //     });
+//         // }
+//         const userAppointment = await Appointment.findAll({
+//             where: {
+//                 patient_id: req.user_id
+//             },
+//             include: [
+//                 {
+//                     model: Service,
+//                     attributes: ['price'],
+//                 },
+//             ],
+//         });console.log(patient_id);
+//         return res.json(userAppointment);
+//     } catch (error) {
+//         return res.status(500).send(error.message);
+//     }
+// };
+
 userController.getAllAppointmentsByUser = async (req, res) => {
-    try {
-        const userId = String(req.user_id);
-        const { id } = req.params;
-        //Verify user
-        if (id !== userId) {
-            return res.status(403).json({
-                success: false,
-                message: "You are not authorized to get this profile",
-            });
-        }
-        const userAppointment = await Appointment.findAll({
+const user = await models.User.findByPk(req.user_id);
+
+    if(user && user.role_id === 3) {
+        let resp = await models.Appointment.findAll({
             where: {
-                patient_id: req.params.id,
-            },
-            include: [
-                {
-                    model: Service,
-                    attributes: ['price'],
-                },
-            ],
-        });
-        return res.json(userAppointment);
-    } catch (error) {
-        return res.status(500).send(error.message);
+                patient_id: req.user_id
+            }
+        })
+        res.status(200).json({
+            resp,
+            message: "Here are your appointment"
+        })
+    } else if(user && user.role_id === 2) {
+        let resp = await models.Appointment.findAll();
+        res.status(200).json({
+            resp,
+            message: "Here are your appointment"
+        })
     }
-};
+}
+
 
 module.exports = userController;

@@ -9,7 +9,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      fullname: {
+      name: {
+        type: Sequelize.STRING
+      },
+      lastname: {
         type: Sequelize.STRING
       },
       email: {
@@ -19,7 +22,7 @@ module.exports = {
       password: {
         type: Sequelize.STRING
       },
-      nif: {
+      dni: {
         type: Sequelize.STRING
       },
       role_id: {
@@ -31,7 +34,7 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      direction: {
+      address: {
         type: Sequelize.STRING
       },
       age: {

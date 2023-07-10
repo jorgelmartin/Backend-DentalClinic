@@ -1,30 +1,32 @@
-const { Appointment, Service } = require('../models');
+const auth = require('../middlewares/verifyToken');
+const { Appointment, Service, User } = require('../models');
 const appointmentController = {}
 
 //CREATE APPOINTMENT FUNCTION
 appointmentController.createAppointment = async (req, res) => {
     try {
         const { patient_id, dentist_id, service_id, date, hour } = req.body;
-        const userId = String(req.user_id);
-        // Check if the current user matches the provided patient_id
-        if (patient_id !== userId) {
-            return res.json({
-                success: false,
-                message: "You are not authorized to create an appointment for this patient",
-            });
-        }
+        // const userId = String(req.user_id);
+        // // Check if the current user matches the provided patient_id
+        // if (userId !== patient_id ) {
+        //     return res.json({
+        //         success: false,
+        //         message: "You are not authorized to create an appointment for this patient",
+        //     });
+        // }
+        
         // Checks if an appointment already exists for the current patient
-        const existingAppointment = await Appointment.findOne({
-            where: {
-                patient_id: req.user_id
-            }
-        });
-        if (existingAppointment) {
-            return res.json({
-                success: false,
-                message: "An appointment already exists for this patient. Please delete the existing appointment before creating a new one.",
-            });
-        }
+        // const existingAppointment = await Appointment.findOne({
+        //     where: {
+        //         patient_id: patient_id
+        //     }
+        // });
+        // if (existingAppointment) {
+        //     return res.json({
+        //         success: false,
+        //         message: "An appointment already exists for this patient. Please delete the existing appointment before creating a new one.",
+        //     });
+        // }
         const newAppointment = await Appointment.create({
             patient_id,
             dentist_id,
@@ -144,21 +146,73 @@ appointmentController.deleteAppointment = async (req, res) => {
 //GET ALL APPOINTMENT FUNCTION
 appointmentController.getAllAppointments = async (req, res) => {
     try {
-        const appointment = await Appointment.findAll({
-            include: [
+        const userId = req.user_id;
+
+        console.log("userid", req.user_id)
+
+        const user = await User.findByPk(userId);
+
+        if(user.role_id == 2) {
+            const appointment = await Appointment.findAll({
+                include: [
+                    {
+                        model: Service,
+                        attributes: ['price', 'name'],
+                    },
+                    {
+                        model: User,
+                        as: "patient",  
+                        attributes: ['name', 'lastname'],
+                    },
+                    {
+                        model: User,
+                        as: "dentist",  
+                        attributes: ['name', 'lastname'],
+                    },
+                ],
+            });
+
+            return res.json(
                 {
-                    model: Service,
-                    attributes: ['price'],
-                },
-            ],
-        });
-        return res.json(
-            {
-                success: true,
-                message: "Get all appointment retrieved",
-                data: appointment
-            }
-        )
+                    success: true,
+                    message: "Get all appointment retrieved",
+                    data: appointment
+                }
+            )
+
+        } else {
+            const appointment = await Appointment.findAll({
+                where: { patient_id: user.id },
+                include: [
+                    {
+                        model: Service,
+                        attributes: ['price', 'name'],
+                    },
+                    {
+                        model: User,
+                        as: "patient",  
+                        attributes: ['name', 'lastname'],
+                    },
+                    {
+                        model: User,
+                        as: "dentist",  
+                        attributes: ['name', 'lastname'],
+                    },
+                ],
+            });
+
+            return res.json(
+                {
+                    success: true,
+                    message: "Get all appointment retrieved",
+                    data: appointment
+                }
+            )
+
+        }
+
+
+        
     } catch (error) {
         return res.status(500).json(
             {
@@ -170,28 +224,61 @@ appointmentController.getAllAppointments = async (req, res) => {
     }
 }
 
+
+appointmentController.getById = async (req, res) => {
+    try {
+        const appointmentId = req.params.id;
+        const appointment = await Appointment.findByPk(appointmentId);
+
+        if (!appointment) {
+            return res.json({
+                success: false,
+                message: "No se encontró una cita con ese ID.",
+            });
+        }
+
+        return res.json({
+            success: true,
+            message: "Cita encontrada exitosamente.",
+            data: appointment
+        });
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({ 
+            success: false,
+            message: "No se pudo obtener la cita.",
+            error: error.message
+        });
+    }
+};
+
+// patient name, date, doctor name.
+appointmentController.searchBy = async (req, res) => {
+    try {
+        const appointmentId = req.params.id;
+        const appointment = await Appointment.findAll({where: {
+            date: req.text, 
+        }});
+
+        if (!appointment) {
+            return res.json({
+                success: false,
+                message: "No se encontró una cita con ese ID.",
+            });
+        }
+
+        return res.json({
+            success: true,
+            message: "Cita encontrada exitosamente.",
+            data: appointment
+        });
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({
+            success: false,
+            message: "No se pudo obtener la cita.",
+            error: error.message
+        });
+    }
+};
 module.exports = appointmentController;
-
-
-
-
-//INCLUIR EL PRECIO DESDE EL SERVICE
-
-// const price = await Service.findById(price);
-
-//Service.price(En el create)
-
-// return res.json(
-//     {
-//         success: true,
-//         message: "Appointment created",
-//         data: newAppointment,
-
-//OJO
-// price: price
-// {
-//     patient_id: newAppointment.patient_id,
-//     service_id: newAppointment.service_id, 
-//     date: newAppointment.date,
-//     hour: newAppointment.date
-// }

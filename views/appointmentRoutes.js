@@ -5,10 +5,10 @@ const auth = require('../middlewares/verifyToken');
 const router = require('express').Router();
 
 //ROUTES
-router.post('/create', auth, appointmentController.createAppointment)
+router.post('/createAppointment', auth, appointmentController.createAppointment)
 router.put('/update/:id', auth, appointmentController.updateAppointment)
 router.delete('/delete/:id', auth, appointmentController.deleteAppointment)
-router.get('/getAll', auth, isAdmin, appointmentController.getAllAppointments)
-
+router.get('/getAll', auth, appointmentController.getAllAppointments)
+router.get('/:id', appointmentController.getById);
 
 module.exports = router;
