@@ -158,7 +158,7 @@ Ingresa y podrás hacer uso de la API.
 
 ### Agradecimientos:
 
-Agradezco a mis compañeros el tiempo dedicado a este proyecto.
+Agradezco a mis profesores y compañeros el tiempo dedicado a este proyecto.
 
 ### Autor:
 Jorge Luis Martin Lorenzo.
