@@ -38,7 +38,7 @@ Como admin/dentistas, se tendrá la posibilidad de ver todos los pacientes regis
 
 
 ### Diagrama BD
-!['readme'](./img/readme.png)
+!['readme'](./public/img/readme.png)
 
 ## Instalación en local
 1. Clonamos el repositorio `$git clone 'url-repository'`
