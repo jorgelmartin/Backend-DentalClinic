@@ -14,10 +14,13 @@ module.exports = {
         unique: true
       },
       price: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER
       },
       duration: {
         type: Sequelize.STRING
+      },
+      description: {
+        type: Sequelize.TEXT
       },
       image: {
         type: Sequelize.STRING

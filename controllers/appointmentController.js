@@ -14,7 +14,7 @@ appointmentController.createAppointment = async (req, res) => {
         //         message: "You are not authorized to create an appointment for this patient",
         //     });
         // }
-        
+
         // Checks if an appointment already exists for the current patient
         // const existingAppointment = await Appointment.findOne({
         //     where: {
@@ -90,7 +90,8 @@ appointmentController.updateAppointment = async (req, res) => {
                 data: appointmentUpdated
             }
         );
-    } catch (error) {console.log(error.message)
+    } catch (error) {
+        console.log(error.message)
         return res.status(500).json(
             {
                 success: false,
@@ -152,7 +153,7 @@ appointmentController.getAllAppointments = async (req, res) => {
 
         const user = await User.findByPk(userId);
 
-        if(user.role_id == 2) {
+        if (user.role_id == 2) {
             const appointment = await Appointment.findAll({
                 include: [
                     {
@@ -161,12 +162,12 @@ appointmentController.getAllAppointments = async (req, res) => {
                     },
                     {
                         model: User,
-                        as: "patient",  
+                        as: "patient",
                         attributes: ['name', 'lastname'],
                     },
                     {
                         model: User,
-                        as: "dentist",  
+                        as: "dentist",
                         attributes: ['name', 'lastname'],
                     },
                 ],
@@ -190,12 +191,12 @@ appointmentController.getAllAppointments = async (req, res) => {
                     },
                     {
                         model: User,
-                        as: "patient",  
+                        as: "patient",
                         attributes: ['name', 'lastname'],
                     },
                     {
                         model: User,
-                        as: "dentist",  
+                        as: "dentist",
                         attributes: ['name', 'lastname'],
                     },
                 ],
@@ -208,11 +209,8 @@ appointmentController.getAllAppointments = async (req, res) => {
                     data: appointment
                 }
             )
-
         }
 
-
-        
     } catch (error) {
         return res.status(500).json(
             {
@@ -233,52 +231,53 @@ appointmentController.getById = async (req, res) => {
         if (!appointment) {
             return res.json({
                 success: false,
-                message: "No se encontró una cita con ese ID.",
+                message: "Appointment not found with the ID",
             });
         }
 
         return res.json({
             success: true,
-            message: "Cita encontrada exitosamente.",
-            data: appointment
-        });
-    } catch (error) {
-        console.log(error.message);
-        return res.status(500).json({ 
-            success: false,
-            message: "No se pudo obtener la cita.",
-            error: error.message
-        });
-    }
-};
-
-// patient name, date, doctor name.
-appointmentController.searchBy = async (req, res) => {
-    try {
-        const appointmentId = req.params.id;
-        const appointment = await Appointment.findAll({where: {
-            date: req.text, 
-        }});
-
-        if (!appointment) {
-            return res.json({
-                success: false,
-                message: "No se encontró una cita con ese ID.",
-            });
-        }
-
-        return res.json({
-            success: true,
-            message: "Cita encontrada exitosamente.",
+            message: "Appointment found successfully",
             data: appointment
         });
     } catch (error) {
         console.log(error.message);
         return res.status(500).json({
             success: false,
-            message: "No se pudo obtener la cita.",
+            message: "Appointment cant be retrieved",
             error: error.message
         });
     }
 };
+
+// appointmentController.searchBy = async (req, res) => {
+//     try {
+//         const appointmentId = req.params.id;
+//         const appointment = await Appointment.findAll({
+//             where: {
+//                 date: req.text,
+//             }
+//         });
+
+//         if (!appointment) {
+//             return res.json({
+//                 success: false,
+//                 message: "No se encontró una cita con ese ID.",
+//             });
+//         }
+
+//         return res.json({
+//             success: true,
+//             message: "Cita encontrada exitosamente.",
+//             data: appointment
+//         });
+//     } catch (error) {
+//         console.log(error.message);
+//         return res.status(500).json({
+//             success: false,
+//             message: "No se pudo obtener la cita.",
+//             error: error.message
+//         });
+//     }
+// };
 module.exports = appointmentController;

@@ -7,7 +7,7 @@ const authController = {};
 //REGISTER
 authController.register = async (req, res) => {
     try {
-        if (req.body.password.length < 6) {
+        if (req.body.password.length < 4) {
             return res.send('Password must be longer than 6 characters');
         }
         const validateEmail = (email) => {
@@ -29,7 +29,6 @@ authController.register = async (req, res) => {
                 "password": newPassword,
                 "dni": req.body.dni,
                 "address": req.body.address,
-                "age": req.body.age,
                 "phone": req.body.phone,
                 role_id: 3
             }

@@ -53,7 +53,7 @@ userController.updateUser = async (req, res) => {
         // };
 
         const newPassword = bcrypt.hashSync(req.body.password, 8);
-        const { name, lastname, email, password, dni, address, age, phone } = req.body;
+        const { name, lastname, email, password, dni, address, phone } = req.body;
         const userUpdated = await User.update(
             {
                 name,
@@ -62,7 +62,6 @@ userController.updateUser = async (req, res) => {
                 password: newPassword,
                 dni,
                 address,
-                age,
                 phone
             },
             {

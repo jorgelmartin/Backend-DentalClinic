@@ -37,9 +37,6 @@ module.exports = {
       address: {
         type: Sequelize.STRING
       },
-      age: {
-        type: Sequelize.INTEGER
-      },
       phone: {
         type: Sequelize.INTEGER
       },
