@@ -1,12 +1,11 @@
 {
-  "name": "clinicadental",
+  "name": "dentalclinic",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "sequelize db:migrate && sequelize db:seed:all"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
