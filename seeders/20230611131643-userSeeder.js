@@ -21,8 +21,8 @@ module.exports = {
     return queryInterface.bulkInsert('Users', [
       {
         id: 1,
-        name: "Admin",
-        lastname: "Admin",
+        name: "Lorena",
+        lastname: "García",
         email: "admin@admin.com",
         password: bcrypt.hashSync(newPassword, 8),
         role_id: 2,
