@@ -9,6 +9,7 @@ const sequelize = new Sequelize(
         host: process.env.MYSQL_HOST || config.development.host,
         port: process.env.MYSQL_PORT || config.development.port,
         dialect: 'mysql',
+        dialectModule: require("mysql2"), // ⇐=== IMPORT
         operatorAliases: false,
         pool: {
             max: 5,  //maximum number of connection in pool
