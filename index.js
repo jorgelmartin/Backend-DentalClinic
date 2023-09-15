@@ -3,18 +3,19 @@ const express = require('express');
 const cors = require('cors');
 const db = require('./db');
 const router = require('./router');
-
 const app = express();
+
 app.use(cors({
-    origin: 'https://react-dentalclinic.vercel.app', 
+    origin: '*', 
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true
 }));
+
+
 app.use(express.static('public'));
 //PORT
 const PORT = 4000;
 app.use(express.json());
-app.use(cors());
 app.use(router);
 
 db.then(() => {
