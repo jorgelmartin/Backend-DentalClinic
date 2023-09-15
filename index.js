@@ -3,12 +3,12 @@ const express = require('express');
 const cors = require('cors');
 const db = require('./db');
 const router = require('./router');
-
+require('dotenv').config();
 const app = express();
 app.use(cors());
 app.use(express.static('public'));
 //PORT
-const PORT = 4000;
+const PORT = process.env.PORT || 4000; 
 app.use(express.json());
 app.use(cors());
 app.use(router);

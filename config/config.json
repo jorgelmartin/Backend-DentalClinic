@@ -15,11 +15,11 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "root",
-    "password": "vfh1JFuFxizwjPPnvQcn",
-    "database": "railway",
-    "host": "containers-us-west-143.railway.app",
+    "username": "process.env.DB_USERNAME",
+    "password": "process.env.DB_PASSWORD",
+    "database": "process.env.DB_DATABASE",
+    "host": "process.env.DB_HOST",
     "dialect": "mysql",
-    "port": 5651
+    "port": process.env.DB_PORT
   }
 }
