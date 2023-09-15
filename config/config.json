@@ -20,6 +20,6 @@
     "database": "railway",
     "host": "containers-us-west-139.railway.app",
     "dialect": "mysql",
-    "port": "6751"
+    "port": 6751
   }
 }
