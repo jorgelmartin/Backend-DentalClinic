@@ -2,7 +2,7 @@
 
 const bcrypt = require('bcrypt');
 
-const password = "1234";
+const password = "Hola1234";
 const newPassword = bcrypt.hashSync(password, 8);
 
 /** @type {import('sequelize-cli').Migration} */
@@ -23,7 +23,7 @@ module.exports = {
         id: 1,
         name: "Lorena",
         lastname: "García",
-        email: "admin@admin.com",
+        email: "user@admin.com",
         password: bcrypt.hashSync(newPassword, 8),
         role_id: 2,
         dni: "18645413Y",
@@ -49,7 +49,7 @@ module.exports = {
         id: 3,
         name: "Usuario",
         lastname: "Usuario",
-        email: "user@user.com",
+        email: "usuario@usuario.com",
         password: newPassword,
         role_id: 3,
         dni: "24645143Y",
