@@ -54,48 +54,49 @@ appointmentController.updateAppointment = async (req, res) => {
     try {
         const appointmentId = req.params.id;
         const userId = req.user_id;
-        const userRoleId = req.user.role_id;
+        const userRoleId = req.role_id;
 
+        // IF TH USER IS ADMIN CAN EDIT
         if (userRoleId === 2) {
+        
         } else {
-            // Si no es el administrador, verifica si es el paciente correspondiente
+              // VERIFY PATIENT
             const appointment = await Appointment.findOne({
                 where: {
                     id: appointmentId,
                     patient_id: userId
                 }
             });
-
-            // Verifica si el registro de la cita existe 
+            // Verifica si el registro de la cita existe y si el usuario tiene el rol correcto
             if (!appointment) {
                 return res.json({
                     success: false,
-                    message: "Appointment not found or you don't have permission to upddate it",
+                    message: "Appointment not found or you don't have permission to update it",
                 });
             }
-            const { patient_id, dentist_id, service_id, date, hour } = req.body;
-            const appointmentUpdated = await Appointment.update(
-                {
-                    patient_id,
-                    dentist_id,
-                    service_id,
-                    date,
-                    hour
-                },
-                {
-                    where: {
-                        id: appointmentId
-                    }
-                }
-            )
-            return res.json(
-                {
-                    success: true,
-                    message: "Appointment updated",
-                    data: appointmentUpdated
-                }
-            );
         }
+        const { patient_id, dentist_id, service_id, date, hour } = req.body;
+        const appointmentUpdated = await Appointment.update(
+            {
+                patient_id,
+                dentist_id,
+                service_id,
+                date,
+                hour
+            },
+            {
+                where: {
+                    id: appointmentId
+                }
+            }
+        )
+        return res.json(
+            {
+                success: true,
+                message: "Appointment updated",
+                data: appointmentUpdated
+            }
+        );
     } catch (error) {
         console.log(error.message)
         return res.status(500).json(
