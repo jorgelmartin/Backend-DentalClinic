@@ -58,10 +58,14 @@ appointmentController.updateAppointment = async (req, res) => {
         const appointment = await Appointment.findOne({
             where: {
                 id: appointmentId,
-                patient_id: userId
+                [Op.or]: [
+                    { role_id: 2 }, // Permite que usuarios con role_id igual a 2 lo editen
+                    { patient_id: userId } // Permite que el paciente correcto lo edite
+                ]
             }
         });
-        // Verifica si el registro de la cita existe y si el usuario tiene el rol correcto
+        
+        // Verifica si el registro de la cita existe 
         if (!appointment) {
             return res.json({
                 success: false,
