@@ -1,4 +1,5 @@
 const auth = require('../middlewares/verifyToken');
+const { Op } = require('sequelize');
 const { Appointment, Service, User } = require('../models');
 const appointmentController = {}
 
