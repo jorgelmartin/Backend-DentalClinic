@@ -54,8 +54,8 @@ appointmentController.updateAppointment = async (req, res) => {
     try {
         const appointmentId = req.params.id;
         const userId = req.user_id;
-        const userRoleId = req.user.role_id; 
-        
+        const userRoleId = req.user.role_id;
+
         if (userRoleId === 2) {
         } else {
             // Si no es el administrador, verifica si es el paciente correspondiente
@@ -65,36 +65,37 @@ appointmentController.updateAppointment = async (req, res) => {
                     patient_id: userId
                 }
             });
-        
-        // Verifica si el registro de la cita existe 
-        if (!appointment) {
-            return res.json({
-                success: false,
-                message: "Appointment not found or you don't have permission to upddate it",
-            });
-        }
-        const { patient_id, dentist_id, service_id, date, hour } = req.body;
-        const appointmentUpdated = await Appointment.update(
-            {
-                patient_id,
-                dentist_id,
-                service_id,
-                date,
-                hour
-            },
-            {
-                where: {
-                    id: appointmentId
+
+            // Verifica si el registro de la cita existe 
+            if (!appointment) {
+                return res.json({
+                    success: false,
+                    message: "Appointment not found or you don't have permission to upddate it",
+                });
+            }
+            const { patient_id, dentist_id, service_id, date, hour } = req.body;
+            const appointmentUpdated = await Appointment.update(
+                {
+                    patient_id,
+                    dentist_id,
+                    service_id,
+                    date,
+                    hour
+                },
+                {
+                    where: {
+                        id: appointmentId
+                    }
                 }
-            }
-        )
-        return res.json(
-            {
-                success: true,
-                message: "Appointment updated",
-                data: appointmentUpdated
-            }
-        );
+            )
+            return res.json(
+                {
+                    success: true,
+                    message: "Appointment updated",
+                    data: appointmentUpdated
+                }
+            );
+        }
     } catch (error) {
         console.log(error.message)
         return res.status(500).json(
