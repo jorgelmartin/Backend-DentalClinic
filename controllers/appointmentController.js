@@ -6,27 +6,6 @@ const appointmentController = {}
 appointmentController.createAppointment = async (req, res) => {
     try {
         const { patient_id, dentist_id, service_id, date, hour } = req.body;
-        // const userId = String(req.user_id);
-        // // Check if the current user matches the provided patient_id
-        // if (userId !== patient_id ) {
-        //     return res.json({
-        //         success: false,
-        //         message: "You are not authorized to create an appointment for this patient",
-        //     });
-        // }
-
-        // Checks if an appointment already exists for the current patient
-        // const existingAppointment = await Appointment.findOne({
-        //     where: {
-        //         patient_id: patient_id
-        //     }
-        // });
-        // if (existingAppointment) {
-        //     return res.json({
-        //         success: false,
-        //         message: "An appointment already exists for this patient. Please delete the existing appointment before creating a new one.",
-        //     });
-        // }
         const newAppointment = await Appointment.create({
             patient_id,
             dentist_id,
@@ -58,7 +37,7 @@ appointmentController.updateAppointment = async (req, res) => {
 
         // IF TH USER IS ADMIN CAN EDIT
         if (userRoleId === 2) {
-        
+
         } else {
               // VERIFY PATIENT
             const appointment = await Appointment.findOne({
@@ -67,7 +46,6 @@ appointmentController.updateAppointment = async (req, res) => {
                     patient_id: userId
                 }
             });
-            // Verifica si el registro de la cita existe y si el usuario tiene el rol correcto
             if (!appointment) {
                 return res.json({
                     success: false,
@@ -114,14 +92,12 @@ appointmentController.deleteAppointment = async (req, res) => {
     try {
         const appointmentId = req.params.id;
         const userId = req.user_id;
-        // Obtén el registro de la cita utilizando el ID de la cita y el ID del usuario
         const appointment = await Appointment.findOne({
             where: {
                 id: appointmentId,
                 patient_id: userId
             }
         });
-        // Verifica si el registro de la cita existe y si el usuario tiene el rol correcto
         if (!appointment) {
             return res.json({
                 success: false,
@@ -155,9 +131,6 @@ appointmentController.deleteAppointment = async (req, res) => {
 appointmentController.getAllAppointments = async (req, res) => {
     try {
         const userId = req.user_id;
-
-        console.log("userid", req.user_id)
-
         const user = await User.findByPk(userId);
 
         if (user.role_id == 2) {
@@ -229,7 +202,6 @@ appointmentController.getAllAppointments = async (req, res) => {
     }
 }
 
-
 appointmentController.getById = async (req, res) => {
     try {
         const appointmentId = req.params.id;
@@ -256,35 +228,4 @@ appointmentController.getById = async (req, res) => {
         });
     }
 };
-
-// appointmentController.searchBy = async (req, res) => {
-//     try {
-//         const appointmentId = req.params.id;
-//         const appointment = await Appointment.findAll({
-//             where: {
-//                 date: req.text,
-//             }
-//         });
-
-//         if (!appointment) {
-//             return res.json({
-//                 success: false,
-//                 message: "No se encontró una cita con ese ID.",
-//             });
-//         }
-
-//         return res.json({
-//             success: true,
-//             message: "Cita encontrada exitosamente.",
-//             data: appointment
-//         });
-//     } catch (error) {
-//         console.log(error.message);
-//         return res.status(500).json({
-//             success: false,
-//             message: "No se pudo obtener la cita.",
-//             error: error.message
-//         });
-//     }
-// };
 module.exports = appointmentController;

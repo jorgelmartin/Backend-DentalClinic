@@ -1,8 +1,6 @@
 const jwt = require('jsonwebtoken');
 
 const auth = (req, res, next) => {
-
-
     try {
         const bearerToken = req.headers.authorization;
 
@@ -16,7 +14,6 @@ const auth = (req, res, next) => {
         const token = bearerToken.split(" ")[1];
 
         const decoded = jwt.verify(token, 'secreto');
-
 
         req.user_id = decoded.userId;
         req.role_id = decoded.roleId;

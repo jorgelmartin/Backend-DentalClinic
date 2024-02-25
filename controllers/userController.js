@@ -7,15 +7,6 @@ const userController = {};
 //GET PROFILE 
 userController.getUser = async (req, res) => {
     try {
-        // const userId = String(req.user_id);
-        // const { id } = req.params;
-        // //Verify user
-        // if (id !== userId) {
-        //     return res.status(403).json({
-        //         success: false,
-        //         message: "You are not authorized to get this profile",
-        //     });
-        // }
         const user = await User.findByPk(req.user_id, {
             attributes: {
                 exclude: ['updatedAt', 'createdAt', 'role_id'],
@@ -42,18 +33,9 @@ userController.getUser = async (req, res) => {
 userController.updateUser = async (req, res) => {
     try {
         const userId = req.user_id;
-        // const user = await User.findByPk(userId);
-        // if (!user) {
-        //     return res.json(
-        //         {
-        //             success: true,
-        //             message: "User doesnt exists"
-        //         }
-        //     );
-        // };
-
         const newPassword = bcrypt.hashSync(req.body.password, 8);
         const { name, lastname, email, password, dni, address, phone } = req.body;
+
         const userUpdated = await User.update(
             {
                 name,
@@ -151,34 +133,6 @@ userController.getAllUsers = async (req, res) => {
         )
     }
 };
-//GET ALL APPOINTMENTS BY USER
-// userController.getAllAppointmentsByUser = async (req, res) => {
-//     try {
-//         // const userId = String(req.user_id);
-//         // const { id } = req.params;
-//         // //Verify user
-//         // if (id !== userId) {
-//         //     return res.status(403).json({
-//         //         success: false,
-//         //         message: "You are not authorized to get this profile",
-//         //     });
-//         // }
-//         const userAppointment = await Appointment.findAll({
-//             where: {
-//                 patient_id: req.user_id
-//             },
-//             include: [
-//                 {
-//                     model: Service,
-//                     attributes: ['price'],
-//                 },
-//             ],
-//         });console.log(patient_id);
-//         return res.json(userAppointment);
-//     } catch (error) {
-//         return res.status(500).send(error.message);
-//     }
-// };
 
 userController.getAllAppointmentsByUser = async (req, res) => {
 const user = await models.User.findByPk(req.user_id);
