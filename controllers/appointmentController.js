@@ -1,4 +1,3 @@
-const auth = require('../middlewares/verifyToken');
 const { Appointment, Service, User } = require('../models');
 const appointmentController = {}
 
@@ -13,7 +12,7 @@ appointmentController.createAppointment = async (req, res) => {
             date,
             hour
         });
-        return res.json({
+        return res.status(200).json({
             success: true,
             message: "Appointment created",
             data: newAppointment
@@ -34,25 +33,23 @@ appointmentController.updateAppointment = async (req, res) => {
         const appointmentId = req.params.id;
         const userId = req.user_id;
         const userRoleId = req.role_id;
-
-        // IF TH USER IS ADMIN CAN EDIT
+        let appointment;
+        
         if (userRoleId === 2) {
-
+            appointment = await Appointment.findOne({
+                where: {
+                    id: appointmentId
+                }
+            });
         } else {
-              // VERIFY PATIENT
-            const appointment = await Appointment.findOne({
+            appointment = await Appointment.findOne({
                 where: {
                     id: appointmentId,
                     patient_id: userId
                 }
             });
-            if (!appointment) {
-                return res.json({
-                    success: false,
-                    message: "Appointment not found or you don't have permission to update it",
-                });
-            }
         }
+
         const { patient_id, dentist_id, service_id, date, hour } = req.body;
         const appointmentUpdated = await Appointment.update(
             {
@@ -68,7 +65,7 @@ appointmentController.updateAppointment = async (req, res) => {
                 }
             }
         )
-        return res.json(
+        return res.status(200).json(
             {
                 success: true,
                 message: "Appointment updated",
@@ -87,6 +84,138 @@ appointmentController.updateAppointment = async (req, res) => {
     }
 };
 
+// GET ALL APPOINTMENT FUNCTION
+appointmentController.getAllAppointments = async (req, res) => {
+    try {
+        const userId = req.user_id;
+        const user = await User.findByPk(userId);
+
+        let whereCondition = {};
+        if (user.role_id !== 2) {
+            whereCondition = { patient_id: user.id };
+        }
+
+        // Get the pagination parameters of the request
+        const page = parseInt(req.query.page) || 1;
+        const perPage = parseInt(req.query.per_page) || 6;
+
+        // Calculate the offset for the query
+        const offset = (page - 1) * perPage;
+
+        // Get appointments with pagination
+        const { count, rows } = await Appointment.findAndCountAll({
+            where: whereCondition,
+            include: [
+                {
+                    model: Service,
+                    attributes: ['price', 'name'],
+                },
+                {
+                    model: User,
+                    as: "patient",
+                    attributes: ['name', 'lastname'],
+                },
+                {
+                    model: User,
+                    as: "dentist",
+                    attributes: ['name', 'lastname'],
+                },
+            ],
+            limit: perPage,
+            offset: offset,
+        });
+
+        // Calculate total pages
+        const totalPages = Math.ceil(count / perPage);
+
+        return res.status(200).json({
+            success: true,
+            message: "All appointments retrieved",
+            data: rows,
+            pagination: {
+                totalItems: count,
+                currentPage: page,
+                totalPages: totalPages,
+                perPage: perPage,
+            },
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Appointments could not be retrieved",
+            error: error.message
+        });
+    }
+};
+
+//GET APPOINTMENT BY ID
+appointmentController.getAppointmentById = async (req, res) => {
+    try {
+        const appointmentId = req.params.id;
+
+        const appointment = await Appointment.findByPk(appointmentId, {
+            include: [
+                {
+                    model: Service,
+                    attributes: ['price', 'name'],
+                },
+                {
+                    model: User,
+                    as: "patient",
+                    attributes: ['name', 'lastname'],
+                },
+                {
+                    model: User,
+                    as: "dentist",
+                    attributes: ['name', 'lastname'],
+                },
+            ],
+        });
+
+        return res.status(200).json({
+            success: true,
+            message: "Appointment retrieved successfully",
+            data: appointment,
+        });
+
+    } catch (error) {
+        console.error('Error fetching appointment by ID:', error);
+        return res.status(500).json({
+            success: false,
+            message: "Appointment could not be retrieved",
+            error: error.message,
+        });
+    }
+};
+
+//GET HOURS
+appointmentController.getHours = async (req, res) => {
+    try {
+        const hours = [
+            { "id": 1, "hour": "09:00:00" },
+            { "id": 2, "hour": "09:30:00" },
+            { "id": 3, "hour": "10:30:00" },
+            { "id": 4, "hour": "12:00:00" },
+            { "id": 5, "hour": "14:30:00" },
+            { "id": 6, "hour": "16:00:00" }
+        ];
+
+        return res.status(200).json({
+            success: true,
+            message: "All hours retrieved",
+            data: hours
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            message: "Hours could not be retrieved",
+            error: error.message
+        });
+    }
+};
+
 //DELETE APPOINTMENT FUNCTION
 appointmentController.deleteAppointment = async (req, res) => {
     try {
@@ -98,18 +227,12 @@ appointmentController.deleteAppointment = async (req, res) => {
                 patient_id: userId
             }
         });
-        if (!appointment) {
-            return res.json({
-                success: false,
-                message: "Appointment not found or you don't have permission to delete it",
-            });
-        }
         const deleteAppointment = await Appointment.destroy({
             where: {
                 id: appointmentId
             }
         })
-        return res.json(
+        return res.status(200).json(
             {
                 success: true,
                 message: "Appointment deleted successfully",
@@ -127,105 +250,4 @@ appointmentController.deleteAppointment = async (req, res) => {
     }
 };
 
-//GET ALL APPOINTMENT FUNCTION
-appointmentController.getAllAppointments = async (req, res) => {
-    try {
-        const userId = req.user_id;
-        const user = await User.findByPk(userId);
-
-        if (user.role_id == 2) {
-            const appointment = await Appointment.findAll({
-                include: [
-                    {
-                        model: Service,
-                        attributes: ['price', 'name'],
-                    },
-                    {
-                        model: User,
-                        as: "patient",
-                        attributes: ['name', 'lastname'],
-                    },
-                    {
-                        model: User,
-                        as: "dentist",
-                        attributes: ['name', 'lastname'],
-                    },
-                ],
-            });
-
-            return res.json(
-                {
-                    success: true,
-                    message: "Get all appointment retrieved",
-                    data: appointment
-                }
-            )
-
-        } else {
-            const appointment = await Appointment.findAll({
-                where: { patient_id: user.id },
-                include: [
-                    {
-                        model: Service,
-                        attributes: ['price', 'name'],
-                    },
-                    {
-                        model: User,
-                        as: "patient",
-                        attributes: ['name', 'lastname'],
-                    },
-                    {
-                        model: User,
-                        as: "dentist",
-                        attributes: ['name', 'lastname'],
-                    },
-                ],
-            });
-
-            return res.json(
-                {
-                    success: true,
-                    message: "Get all appointment retrieved",
-                    data: appointment
-                }
-            )
-        }
-
-    } catch (error) {
-        return res.status(500).json(
-            {
-                success: false,
-                message: "Appointment cant be retrieved",
-                error: error.message
-            }
-        )
-    }
-}
-
-appointmentController.getById = async (req, res) => {
-    try {
-        const appointmentId = req.params.id;
-        const appointment = await Appointment.findByPk(appointmentId);
-
-        if (!appointment) {
-            return res.json({
-                success: false,
-                message: "Appointment not found with the ID",
-            });
-        }
-
-        return res.json({
-            success: true,
-            message: "Appointment found successfully",
-            data: appointment
-        });
-    } catch (error) {
-        console.log(error.message);
-        return res.status(500).json({
-            success: false,
-            message: "Appointment cant be retrieved",
-            error: error.message
-        });
-    }
-};
 module.exports = appointmentController;

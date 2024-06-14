@@ -4,9 +4,9 @@
 Este proyecto requería una base de datos relacional de una clínica dental utilizando Express y Sequelize.
 
 ### Sobre el proyecto
-Basandonos en el Backend para una Clínica Dental, disponemos de usuarios pacientes y admin/dentistas. Por cuestiones de seguridad, todos los usuarios que se registren tendrán el rol de pacientes. Un vez registrados se tendrá la posibilidad de crear, modificar y borrar citas propias, también se podrá ver, modificar o borrar el perfil.
+Basandonos en el Backend para una Clínica Dental, disponemos de usuarios pacientes y admin/dentistas. Por cuestiones de seguridad, todos los usuarios que se registren tendrán el rol de pacientes. Un vez registrados se tendrá la posibilidad de crear, modificar y borrar citas propias, también se podrá ver, modificar el perfil.
 
-Como admin/dentistas, se tendrá la posibilidad de ver todos los pacientes registrados y tambien todas las citas, mientras que los pacientes podrán ver su historial de citas junto con el precio y el id del tratamiento asociado.
+Como admin/dentistas, se tendrá la posibilidad de ver todos los pacientes registrados y tambien todas las citas, mientras que los pacientes podrán ver su historial de citas.
 
 ### Tecnologías utilizadas:
 <div align="center">
@@ -150,15 +150,10 @@ Como admin/dentistas, se tendrá la posibilidad de ver todos los pacientes regis
             DELETE http://localhost:4000/user/delete/5
 </details>
 
-### Uso de la API
-
-Ingresa y podrás hacer uso de la API.
-
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://www.postman.com/jorgemctin/workspace/dental-clinic/request/27847989-cede5d46-5868-4252-a484-e325b2328a93)
-
 ### Agradecimientos:
 
 Agradezco a mis profesores y compañeros el tiempo dedicado a este proyecto.
 
 ### Autor:
+
 Jorge Luis Martin Lorenzo.

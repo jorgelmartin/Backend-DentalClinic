@@ -3,7 +3,7 @@ const isAdmin = (req, res, next) => {
         if (req.role_id !== 2) {
             return res.json({
                 success: true,
-                message: "You needAdmin permissions"
+                message: "You need Admin permissions"
             });
         } 
         
