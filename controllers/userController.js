@@ -100,9 +100,9 @@ userController.getAllUsers = async (req, res) => {
             success: true,
             message: "Get all users retrieved",
             page: page,
-            per_page: perPage,
+            perPage: perPage,
             total: count,
-            total_pages: totalPages,
+            totalPages: totalPages,
             data: rows,
         });
     } catch (error) {

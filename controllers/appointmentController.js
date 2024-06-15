@@ -1,7 +1,8 @@
+const { Op } = require('sequelize');
 const { Appointment, Service, User } = require('../models');
 const appointmentController = {}
 
-//CREATE APPOINTMENT FUNCTION
+//CREATE APPOINTMENT
 appointmentController.createAppointment = async (req, res) => {
     try {
         const { patient_id, dentist_id, service_id, date, hour } = req.body;
@@ -27,14 +28,14 @@ appointmentController.createAppointment = async (req, res) => {
     }
 };
 
-//UPDATE APPOINTMENT FUNCTION
+//UPDATE APPOINTMENT
 appointmentController.updateAppointment = async (req, res) => {
     try {
         const appointmentId = req.params.id;
         const userId = req.user_id;
         const userRoleId = req.role_id;
         let appointment;
-        
+
         if (userRoleId === 2) {
             appointment = await Appointment.findOne({
                 where: {
@@ -84,7 +85,7 @@ appointmentController.updateAppointment = async (req, res) => {
     }
 };
 
-// GET ALL APPOINTMENT FUNCTION
+// GET ALL APPOINTMENT
 appointmentController.getAllAppointments = async (req, res) => {
     try {
         const userId = req.user_id;
@@ -131,6 +132,84 @@ appointmentController.getAllAppointments = async (req, res) => {
         return res.status(200).json({
             success: true,
             message: "All appointments retrieved",
+            data: rows,
+            pagination: {
+                totalItems: count,
+                currentPage: page,
+                totalPages: totalPages,
+                perPage: perPage,
+            },
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Appointments could not be retrieved",
+            error: error.message
+        });
+    }
+};
+
+// SEARCH APPOINTMENTS FUNCTION
+appointmentController.searchAppointments = async (req, res) => {
+    try {
+        const userId = req.user_id;
+        const user = await User.findByPk(userId);
+
+        let whereCondition = {};
+        if (user.role_id !== 2) {
+            whereCondition = { patient_id: user.id };
+        }
+
+        // Get the pagination parameters of the request
+        const page = parseInt(req.query.page) || 1;
+        const perPage = parseInt(req.query.per_page) || 6;
+
+        // Calculate the offset for the query
+        const offset = (page - 1) * perPage;
+
+        // Add search functionality
+        const searchQuery = req.query.query;
+        if (searchQuery) {
+            whereCondition[Op.or] = [
+                { '$Service.name$': { [Op.like]: `%${searchQuery}%` } },
+                { '$Service.price$': { [Op.like]: `%${searchQuery}%` } },
+                { '$patient.name$': { [Op.like]: `%${searchQuery}%` } },
+                { '$patient.lastname$': { [Op.like]: `%${searchQuery}%` } },
+                { '$dentist.name$': { [Op.like]: `%${searchQuery}%` } },
+                { '$dentist.lastname$': { [Op.like]: `%${searchQuery}%` } }
+            ];
+        }
+
+        // Get appointments with pagination
+        const { count, rows } = await Appointment.findAndCountAll({
+            where: whereCondition,
+            include: [
+                {
+                    model: Service,
+                    attributes: ['price', 'name'],
+                },
+                {
+                    model: User,
+                    as: "patient",
+                    attributes: ['name', 'lastname'],
+                },
+                {
+                    model: User,
+                    as: "dentist",
+                    attributes: ['name', 'lastname'],
+                },
+            ],
+            limit: perPage,
+            offset: offset,
+        });
+
+        // Calculate total pages
+        const totalPages = Math.ceil(count / perPage);
+
+        return res.status(200).json({
+            success: true,
+            message: "Appointments retrieved",
             data: rows,
             pagination: {
                 totalItems: count,
@@ -216,37 +295,29 @@ appointmentController.getHours = async (req, res) => {
     }
 };
 
-//DELETE APPOINTMENT FUNCTION
+//DELETE APPOINTMENT
 appointmentController.deleteAppointment = async (req, res) => {
     try {
         const appointmentId = req.params.id;
         const userId = req.user_id;
-        const appointment = await Appointment.findOne({
+        const deleteResult = await Appointment.destroy({
             where: {
                 id: appointmentId,
                 patient_id: userId
             }
         });
-        const deleteAppointment = await Appointment.destroy({
-            where: {
-                id: appointmentId
-            }
-        })
-        return res.status(200).json(
-            {
-                success: true,
-                message: "Appointment deleted successfully",
-                data: deleteAppointment
-            }
-        );
+
+        return res.status(200).json({
+            success: true,
+            message: "Appointment deleted successfully",
+            data: deleteResult
+        });
     } catch (error) {
-        return res.status(500).json(
-            {
-                success: false,
-                message: "Appointment cant be deleted",
-                error: error.message
-            }
-        )
+        return res.status(500).json({
+            success: false,
+            message: "Appointment can't be deleted",
+            error: error.message
+        });
     }
 };
 

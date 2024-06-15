@@ -10,5 +10,6 @@ router.delete('/delete/:id', auth, appointmentController.deleteAppointment)
 router.get('/getAll', auth, appointmentController.getAllAppointments)
 router.get('/getAppointmentById/:id', auth, appointmentController.getAppointmentById)
 router.get('/getHours', auth, appointmentController.getHours)
+router.get('/searchAppointments', auth, appointmentController.searchAppointments)
 
 module.exports = router;
