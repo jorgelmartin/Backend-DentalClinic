@@ -1,6 +1,6 @@
 const { User } = require('../models');
 const bcrypt = require('bcrypt');
-const { isValidName, validateEmail, isValidDNI, isValidAddress, isValidPhone, isValidField } = require('../service/useful');
+const { isValidName, validateEmail, isValidDNI, isValidAddress, isValidPhone, isValidField, searchUserCriteria, getPagination } = require('../service/useful');
 const userController = {};
 
 //GET PROFILE 
@@ -76,34 +76,34 @@ userController.updateUser = async (req, res) => {
 //GET ALL THE USERS
 userController.getAllUsers = async (req, res) => {
     try {
-        // Get the pagination parameters of the request
         const page = parseInt(req.query.page) || 1;
         const perPage = parseInt(req.query.per_page) || 6;
+        const query = req.query.query;
+        const { limit, offset } = getPagination(page, perPage);
 
-        // Calculate the offset for the query
-        const offset = (page - 1) * perPage;
+        const searchCriteria = searchUserCriteria(query);
 
-        // Get user with pagination
         const { count, rows } = await User.findAndCountAll({
             attributes: {
                 exclude: ['password', 'updatedAt', 'createdAt'],
             },
-            limit: perPage,
+            where: searchCriteria,
+            limit: limit,
             offset: offset,
         });
 
-        // Calculate total pages
         const totalPages = Math.ceil(count / perPage);
 
-        // Build response with pagination metadata
         return res.status(200).json({
             success: true,
             message: "Get all users retrieved",
-            page: page,
-            perPage: perPage,
-            total: count,
-            totalPages: totalPages,
             data: rows,
+            pagination: {
+                totalItems: count,
+                currentPage: page,
+                totalPages: totalPages,
+                perPage: perPage,
+            },
         });
     } catch (error) {
         return res.status(500).json({

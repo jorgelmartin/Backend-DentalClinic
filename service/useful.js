@@ -1,3 +1,6 @@
+const { Op } = require("sequelize");
+
+//Validations
 module.exports.isValidField = (field, validator, errorMessage) => {
     if (field && !validator(field)) {
         throw new Error(errorMessage);
@@ -27,4 +30,62 @@ module.exports.isValidAddress = (address) => {
 module.exports.isValidPhone = (phone) => {
     const phoneCheck = /^\+?\d{1,14}$/;
     return phoneCheck.test(phone);
+};
+
+// Utility function to handle pagination
+module.exports.getPagination = (page, perPage) => {
+    const offset = (page - 1) * perPage;
+    return { limit: perPage, offset: offset };
+};
+
+// clean Special Characters
+const cleanSpecialCharacters = (input) => {
+    return input.replace(/[^\w\s]/gi, ''); 
+};
+
+// Utility function to build whereCondition
+module.exports.searchAppointmentCriteria = (user, searchQuery) => {
+    let whereCondition = {};
+
+    if (user.role_id !== 2) {
+        whereCondition = { patient_id: user.id };
+    }
+
+    if (searchQuery) {
+        const sanitizedQuery = cleanSpecialCharacters(searchQuery.trim());
+        const searchTerms = `%${sanitizedQuery}%`;
+
+        whereCondition[Op.or] = [
+            { '$Service.name$': { [Op.like]: searchTerms } },
+            { '$Service.price$': { [Op.like]: searchTerms } },
+            { '$patient.name$': { [Op.like]: searchTerms } },
+            { '$patient.lastname$': { [Op.like]: searchTerms } },
+            { '$dentist.name$': { [Op.like]: searchTerms } },
+            { '$dentist.lastname$': { [Op.like]: searchTerms } }
+        ];
+    }
+
+    return whereCondition;
+};
+
+// Utility function to build search users
+module.exports.searchUserCriteria = (query) => {
+    let searchCriteria = {};
+
+    if (query) {
+        const sanitizedQuery = cleanSpecialCharacters(query.trim());
+        const searchTerms = `%${sanitizedQuery}%`;
+
+        searchCriteria[Op.or] = [
+            { id: { [Op.like]: searchTerms } },
+            { name: { [Op.like]: searchTerms } },
+            { lastname: { [Op.like]: searchTerms } },
+            { email: { [Op.like]: searchTerms } },
+            { dni: { [Op.like]: searchTerms } },
+            { address: { [Op.like]: searchTerms } },
+            { phone: { [Op.like]: searchTerms } }
+        ];
+    }
+
+    return searchCriteria;
 };
