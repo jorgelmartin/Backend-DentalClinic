@@ -1,5 +1,4 @@
 const { Service } = require("../models");
-
 const serviceController = {};
 
 //GET ALL SERVICE/TREATMENT

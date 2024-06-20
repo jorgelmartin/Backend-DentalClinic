@@ -1,6 +1,14 @@
 const { User } = require('../models');
 const bcrypt = require('bcrypt');
-const { isValidName, validateEmail, isValidDNI, isValidAddress, isValidPhone, isValidField, searchUserCriteria, getPagination } = require('../service/useful');
+const { 
+    isValidName, 
+    validateEmail, 
+    isValidDNI, 
+    isValidAddress, 
+    isValidPhone, 
+    isValidField, 
+    searchUserCriteria, 
+    getPagination } = require('../service/useful');
 const userController = {};
 
 //GET PROFILE 
@@ -11,18 +19,42 @@ userController.getUser = async (req, res) => {
                 exclude: ['updatedAt', 'createdAt', 'role_id'],
             },
         });
-        if (!user) {
-            return res.status(404).json({
-                success: false,
-                message: 'User not found',
-            });
-        }
-        return res.json(user);
+        return res.status(200).json({
+            success: true,
+            message: `User retrieved successfully`,
+            data: user,
+        });
     } catch (error) {
         console.error(error);
         return res.status(500).json({
             success: false,
             message: 'Failed to get user',
+            error: error.message,
+        });
+    }
+};
+
+// GET USER DETAIL FOR ADMIN
+userController.getUserDetailsForAdmin = async (req, res) => {
+    const userId = req.params.id; 
+
+    try {
+        const user = await User.findByPk(userId, {
+            attributes: {
+                exclude: ['password'],
+            },
+        });
+
+        return res.status(200).json({
+            success: true,
+            message: `User details retrieved successfully for admin`,
+            data: user,
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            message: `Failed to retrieve user details with ID ${userId}`,
             error: error.message,
         });
     }

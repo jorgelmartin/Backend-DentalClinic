@@ -1,8 +1,13 @@
 const { User } = require('../models');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { validateEmail, isValidName, isValidDNI, isValidAddress, isValidPhone, isValidField } = require('../service/useful');
-
+const { 
+    validateEmail, 
+    isValidName, 
+    isValidDNI, 
+    isValidAddress, 
+    isValidPhone, 
+    isValidField } = require('../service/useful');
 const authController = {};
 
 //REGISTER
@@ -33,13 +38,11 @@ authController.register = async (req, res) => {
         };
 
         const newUser = await User.create(newUserFields);
-        return res.status(200).json(
-            {
+        return res.status(200).json({
                 success: true,
                 message: "User registered",
                 user: newUser
-            }
-        );
+            });
     } catch (error) {
         console.error(error);
         return res.status(500).json({
@@ -62,35 +65,28 @@ authController.login = async (req, res) => {
                 message: "Wrong credentials"
             });
         }
-        const token = jwt.sign(
-            { 
+        const token = jwt.sign({ 
                 userId: user.id,
                 roleId: user.role_id,
                 email: user.email
             },
-            'secreto',
-            {
+            'secreto',{
                 expiresIn: '3h' 
-            }
-        );
+            });
         
-        return res.status(200).json(
-            {
+        return res.status(200).json({
                 success: true,
                 message: "User logged",
                 token: token,
                 user: user
-            }
-        );
+            });
     } catch (error) {
-        return res.status(500).json(
-            {
+        return res.status(500).json({
                 success: false,
                 message: "User cant be logged",
                 error: error.message
-            }
-        )
+            })
     }
-}
+};
 
 module.exports = authController

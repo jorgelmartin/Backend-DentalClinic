@@ -43,19 +43,19 @@ const cleanSpecialCharacters = (input) => {
     return input.replace(/[^\w\s]/gi, ''); 
 };
 
-// Utility function to build whereCondition
+// Utility function to search Appointment
 module.exports.searchAppointmentCriteria = (user, searchQuery) => {
-    let whereCondition = {};
+    let searchCriteria = {};
 
     if (user.role_id !== 2) {
-        whereCondition = { patient_id: user.id };
+        searchCriteria = { patient_id: user.id };
     }
 
     if (searchQuery) {
         const sanitizedQuery = cleanSpecialCharacters(searchQuery.trim());
         const searchTerms = `%${sanitizedQuery}%`;
 
-        whereCondition[Op.or] = [
+        searchCriteria[Op.or] = [
             { '$Service.name$': { [Op.like]: searchTerms } },
             { '$Service.price$': { [Op.like]: searchTerms } },
             { '$patient.name$': { [Op.like]: searchTerms } },
@@ -65,10 +65,10 @@ module.exports.searchAppointmentCriteria = (user, searchQuery) => {
         ];
     }
 
-    return whereCondition;
+    return searchCriteria;
 };
 
-// Utility function to build search users
+// Utility function search users
 module.exports.searchUserCriteria = (query) => {
     let searchCriteria = {};
 
