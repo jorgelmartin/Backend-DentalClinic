@@ -23,7 +23,7 @@ module.exports.isValidDNI = (dni) => {
 };
 
 module.exports.isValidAddress = (address) => {
-    const addressCheck = /^[a-zA-Z\s]{1,40}$/;
+    const addressCheck = /^[a-zA-Z0-9\s]{1,40}$/;
     return addressCheck.test(address);
 };
 
