@@ -128,7 +128,7 @@ userController.getAllUsers = async (req, res) => {
 
         return res.status(200).json({
             success: true,
-            message: "Get all users retrieved",
+            message: "Users retrieved",
             data: rows,
             pagination: {
                 totalItems: count,
@@ -156,7 +156,7 @@ userController.getAllDentists = async (req, res) => {
 
         return res.status(200).json({
             success: true,
-            message: "All dentists retrieved",
+            message: "Dentists retrieved",
             data: dentists,
         });
     } catch (error) {

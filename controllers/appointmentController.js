@@ -199,7 +199,7 @@ appointmentController.getHours = async (req, res) => {
 
         return res.status(200).json({
             success: true,
-            message: "All hours retrieved",
+            message: "Hours retrieved",
             data: hours
         });
     } catch (error) {

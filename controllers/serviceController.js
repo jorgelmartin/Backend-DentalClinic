@@ -11,7 +11,7 @@ serviceController.getAllServices = async (req, res) => {
         });
         return res.status(200).json({
             success: true,
-            message: "Get all service retrieved",
+            message: "Services retrieved",
             data: service
         });
     } catch (error) {

@@ -13,7 +13,7 @@ module.exports.validateEmail = (email) => {
 };
 
 module.exports.isValidName = (name) => {
-    const nameCheck = /^[a-zA-Z\s]{1,40}$/; 
+    const nameCheck = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,40}$/; 
     return nameCheck.test(name);
 };
 
