@@ -1,12 +1,36 @@
 
 const { Appointment, Service, User } = require('../models');
-const { getPagination, searchAppointmentCriteria } = require('../service/useful');
+const { 
+    getPagination, 
+    searchAppointmentCriteria, 
+    isValidField } = require('../service/useful');
+const { 
+    isDoctorAvailable, 
+    isPatientAvailable, 
+    findAppointment, 
+    validateAppointmentDate} = require('../service/validateAppointment');
 const appointmentController = {}
 
 //CREATE APPOINTMENT
 appointmentController.createAppointment = async (req, res) => {
     try {
         const { patient_id, dentist_id, service_id, date, hour } = req.body;
+
+        // Validate that the appointment date is valid
+        isValidField(date, (d) => validateAppointmentDate(d, hour, "Invalid appointment date."));
+
+        // Validate that there are no duplicate appointments for the doctor
+        const isDoctorFree = await isDoctorAvailable(Appointment, dentist_id, date, hour);
+        if (!isDoctorFree) {
+            throw new Error("The doctor is already booked at this time.");
+        }
+
+        // Validate that there are no duplicate appointments for the patient
+        const isPatientFree = await isPatientAvailable(Appointment, patient_id, date, hour);
+        if (!isPatientFree) {
+            throw new Error("The patient already has an appointment at this time.");
+        }
+
         const newAppointment = await Appointment.create({
             patient_id,
             dentist_id,
@@ -33,39 +57,26 @@ appointmentController.createAppointment = async (req, res) => {
 appointmentController.updateAppointment = async (req, res) => {
     try {
         const appointmentId = req.params.id;
-        const userId = req.user_id;
-        const userRoleId = req.role_id;
-        let appointment;
-
-        if (userRoleId === 2) { 
-            appointment = await Appointment.findOne({
-                where: {
-                    id: appointmentId
-                }
-            });
-        } else { 
-            appointment = await Appointment.findOne({
-                where: {
-                    id: appointmentId,
-                    patient_id: userId
-                }
-            });
-        }
-
-        if (!appointment) {
-            return res.status(404).json({
-                success: false,
-                message: "Appointment not found"
-            });
-        }
-
         const { dentist_id, service_id, date, hour } = req.body;
         const updateData = {};
 
-        if (dentist_id) updateData.dentist_id = dentist_id;
-        if (service_id) updateData.service_id = service_id;
-        if (date) updateData.date = date;
-        if (hour) updateData.hour = hour;
+        // Validations
+        if (date) {
+            isValidField(date, (d) => validateAppointmentDate(d, hour, "Invalid appointment date."));
+            updateData.date = date;
+        }
+
+        if (dentist_id) {
+            const isDoctorFree = await isDoctorAvailable(Appointment, dentist_id, date, hour);
+            if (!isDoctorFree) {
+                throw new Error("The doctor is already booked at this time.");
+            }
+            updateData.dentist_id = dentist_id; 
+        }
+
+        if (service_id) {
+            updateData.service_id = service_id;
+        }
 
         const appointmentUpdated = await Appointment.update(updateData, {
             where: {

@@ -6,7 +6,9 @@ Este proyecto requería una base de datos relacional de una clínica dental util
 ### Sobre el proyecto
 En el backend de la clínica dental, gestionamos dos tipos de usuarios: usuarios/pacientes y administradores/dentistas. Por razones de seguridad, todos los nuevos registros se asignarán inicialmente al rol de paciente. Una vez registrados, los pacientes podrán crear, modificar y visualizar sus propias citas, así como ver y actualizar su perfil.
 
-Por otro lado, los administradores/dentistas tendrán acceso completo para ver todos los pacientes y citas registradas.
+Por otro lado, los administradores/dentistas tendrán acceso completo para ver todos los pacientes y citas registradas. Además, se ha añadido paginación para 6 elementos en los endpoints de usuarios y citas, permitiendo una navegación más eficiente a través de los datos. La paginación incluye filtrado por criterios de búsqueda y devuelve información sobre el total de citas, pacientes y servicios en cada página.
+
+Adicionalmente, se ha implementado una validación al crear y actualizar una cita, asegurando que los doctores estén disponibles en la fecha y hora seleccionadas para evitar conflictos de horarios. También se han creado validaciones para los inputs del usuario, asegurando que cumplan con los formatos requeridos y sean válidos.
 
 ### Tecnologías utilizadas:
 <div align="center">

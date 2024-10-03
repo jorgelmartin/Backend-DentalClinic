@@ -1,14 +1,15 @@
 const { User } = require('../models');
 const bcrypt = require('bcrypt');
-const { 
-    isValidName, 
-    validateEmail, 
-    isValidDNI, 
-    isValidAddress, 
-    isValidPhone, 
-    isValidField, 
-    searchUserCriteria, 
+const {
+    isValidField,
+    searchUserCriteria,
     getPagination } = require('../service/useful');
+const {
+    isValidName,
+    validateEmail,
+    isValidDNI,
+    isValidAddress,
+    isValidPhone } = require('../service/validateUser');
 const userController = {};
 
 //GET PROFILE 
@@ -36,7 +37,7 @@ userController.getUser = async (req, res) => {
 
 // GET USER DETAIL FOR ADMIN
 userController.getUserDetailsForAdmin = async (req, res) => {
-    const userId = req.params.id; 
+    const userId = req.params.id;
 
     try {
         const user = await User.findByPk(userId, {
@@ -151,7 +152,7 @@ userController.getAllDentists = async (req, res) => {
     try {
         const dentists = await User.findAll({
             where: { role_id: 2 },
-            attributes: ['id', 'name', 'lastname'], 
+            attributes: ['id', 'name', 'lastname'],
         });
 
         return res.status(200).json({
