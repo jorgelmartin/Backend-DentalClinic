@@ -1,3 +1,4 @@
+require('dotenv').config();
 const config = {
     development: {
         username: process.env.DB_USERNAME,
@@ -9,7 +10,7 @@ const config = {
     },
     test: {
         username: process.env.DB_USERNAME,
-        password: null,
+        password: '',
         database: "database_test",
         host: "127.0.0.1",
         dialect: "mysql"

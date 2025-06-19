@@ -1,14 +1,9 @@
 
 const { Appointment, Service, User } = require('../models');
-const { 
-    getPagination, 
-    searchAppointmentCriteria, 
-    isValidField } = require('../service/useful');
-const { 
-    isDoctorAvailable, 
-    isPatientAvailable, 
-    findAppointment, 
-    validateAppointmentDate} = require('../service/validateAppointment');
+const { isValidField } = require('../services/validators/validation');
+const searchAppointmentCriteria = require('../services/search/searchAppointment');
+const getPagination = require('../services/search/pagination');
+const validateAppointment = require('../services/validators/validateAppointment');
 const appointmentController = {}
 
 //CREATE APPOINTMENT
@@ -17,16 +12,16 @@ appointmentController.createAppointment = async (req, res) => {
         const { patient_id, dentist_id, service_id, date, hour } = req.body;
 
         // Validate that the appointment date is valid
-        isValidField(date, (d) => validateAppointmentDate(d, hour, "Invalid appointment date."));
+        isValidField(date, (d) => validateAppointment.validateAppointmentDate(d, hour, "Invalid appointment date."));
 
         // Validate that there are no duplicate appointments for the doctor
-        const isDoctorFree = await isDoctorAvailable(Appointment, dentist_id, date, hour);
+        const isDoctorFree = await validateAppointment.isDoctorAvailable(Appointment, dentist_id, date, hour);
         if (!isDoctorFree) {
             throw new Error("The doctor is already booked at this time.");
         }
 
         // Validate that there are no duplicate appointments for the patient
-        const isPatientFree = await isPatientAvailable(Appointment, patient_id, date, hour);
+        const isPatientFree = await validateAppointment.isPatientAvailable(Appointment, patient_id, date, hour);
         if (!isPatientFree) {
             throw new Error("The patient already has an appointment at this time.");
         }
@@ -44,7 +39,6 @@ appointmentController.createAppointment = async (req, res) => {
             data: newAppointment
         });
     } catch (error) {
-        console.log(error.message);
         return res.status(500).json({
             success: false,
             message: "Appointment could not be created",
@@ -62,12 +56,12 @@ appointmentController.updateAppointment = async (req, res) => {
 
         // Validations
         if (date) {
-            isValidField(date, (d) => validateAppointmentDate(d, hour, "Invalid appointment date."));
+            isValidField(date, (d) => validateAppointment.validateAppointmentDate(d, hour, "Invalid appointment date."));
             updateData.date = date;
         }
 
         if (dentist_id) {
-            const isDoctorFree = await isDoctorAvailable(Appointment, dentist_id, date, hour);
+            const isDoctorFree = await validateAppointment.isDoctorAvailable(Appointment, dentist_id, date, hour);
             if (!isDoctorFree) {
                 throw new Error("The doctor is already booked at this time.");
             }
@@ -90,7 +84,6 @@ appointmentController.updateAppointment = async (req, res) => {
             data: appointmentUpdated
         });
     } catch (error) {
-        console.log(error.message);
         return res.status(500).json({
             success: false,
             message: "Appointment can't be updated",
@@ -107,8 +100,8 @@ appointmentController.searchAppointments = async (req, res) => {
 
         const whereCondition = searchAppointmentCriteria(user, req.query.query);
 
-        const page = parseInt(req.query.page) || 1;
-        const perPage = parseInt(req.query.per_page) || 6;
+        const page = Math.max(1, parseInt(req.query.page) || 1);
+        const perPage = Math.max(1, parseInt(req.query.per_page) || 6);
         const { limit, offset } = getPagination(page, perPage);
 
         const { count, rows } = await Appointment.findAndCountAll({
@@ -131,6 +124,7 @@ appointmentController.searchAppointments = async (req, res) => {
             ],
             limit: limit,
             offset: offset,
+            order: [['createdAt', 'DESC']],
         });
 
         const totalPages = Math.ceil(count / perPage);
@@ -160,8 +154,19 @@ appointmentController.searchAppointments = async (req, res) => {
 appointmentController.getAppointmentById = async (req, res) => {
     try {
         const appointmentId = req.params.id;
+        const userId = req.user_id; 
+        const roleId = req.role_id;
 
-        const appointment = await Appointment.findByPk(appointmentId, {
+        const appointment = await validateAppointment.checkAppointment(Appointment, appointmentId, userId, roleId);
+
+        if (!appointment) {
+            return res.status(404).json({
+                success: false,
+                message: "Appointment not found or you don't have permission to access it",
+            });
+        }
+
+        const appointmentDetails  = await Appointment.findByPk(appointmentId, {
             include: [
                 {
                     model: Service,
@@ -183,11 +188,10 @@ appointmentController.getAppointmentById = async (req, res) => {
         return res.status(200).json({
             success: true,
             message: "Appointment retrieved successfully",
-            data: appointment,
+            data: appointmentDetails,
         });
 
     } catch (error) {
-        console.error('Error fetching appointment by ID:', error);
         return res.status(500).json({
             success: false,
             message: "Appointment could not be retrieved",
@@ -214,7 +218,6 @@ appointmentController.getHours = async (req, res) => {
             data: hours
         });
     } catch (error) {
-        console.error(error);
         return res.status(500).json({
             success: false,
             message: "Hours could not be retrieved",
@@ -227,13 +230,19 @@ appointmentController.getHours = async (req, res) => {
 appointmentController.deleteAppointment = async (req, res) => {
     try {
         const appointmentId = req.params.id;
-        const userId = req.user_id;
-        const deleteResult = await Appointment.destroy({
-            where: {
-                id: appointmentId,
-                patient_id: userId
-            }
-        });
+        const userId = req.user_id; 
+        const roleId = req.role_id;
+
+        const appointment = await validateAppointment.checkAppointment(Appointment, appointmentId, userId, roleId);
+
+        if (!appointment) {
+            return res.status(404).json({
+                success: false,
+                message: "Appointment not found or you don't have permission to delete it",
+            });
+        }
+
+        await appointment.destroy();
 
         return res.status(200).json({
             success: true,

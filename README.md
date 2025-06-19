@@ -40,7 +40,7 @@ Adicionalmente, se ha implementado una validación al crear y actualizar una cit
 
 
 ### Diagrama BD
-!['readme'](./public/images/readme.png)
+!['readme'](./public/images/DB-DentalClinic.png)
 
 ## Instalación en local
 1. Clonamos el repositorio `$git clone 'url-repository'`
@@ -242,7 +242,7 @@ Adicionalmente, se ha implementado una validación al crear y actualizar una cit
 - USERS
     - GET ALL USERS (ADMIN)
 
-            GET http://localhost:4000/user/getAllUsers
+            GET http://localhost:4000/user/searchUsers
         response:
         ```js
         {
@@ -322,7 +322,7 @@ Adicionalmente, se ha implementado una validación al crear y actualizar una cit
 
     - UPDATE MY PROFILE
 
-            PUT localhost:4000/user/update
+            PUT http://localhost:4000/user/update
         body:
         ```js
             {

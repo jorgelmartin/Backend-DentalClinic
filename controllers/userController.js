@@ -1,15 +1,9 @@
 const { User } = require('../models');
 const bcrypt = require('bcrypt');
-const {
-    isValidField,
-    searchUserCriteria,
-    getPagination } = require('../service/useful');
-const {
-    isValidName,
-    validateEmail,
-    isValidDNI,
-    isValidAddress,
-    isValidPhone } = require('../service/validateUser');
+const isValidField = require('../services/validators/validation');
+const searchUserCriteria = require('../services/search/searchUser');
+const getPagination = require('../services/search/pagination');
+const validateUser = require('../services/validators/validateUser');
 const userController = {};
 
 //GET PROFILE 
@@ -26,7 +20,6 @@ userController.getUser = async (req, res) => {
             data: user,
         });
     } catch (error) {
-        console.error(error);
         return res.status(500).json({
             success: false,
             message: 'Failed to get user',
@@ -52,7 +45,6 @@ userController.getUserDetailsForAdmin = async (req, res) => {
             data: user,
         });
     } catch (error) {
-        console.error(error);
         return res.status(500).json({
             success: false,
             message: `Failed to retrieve user details with ID ${userId}`,
@@ -69,12 +61,12 @@ userController.updateUser = async (req, res) => {
         let updatedFields = {};
 
         // Validations
-        isValidField(name, isValidName, "Name must contain only letters and spaces, up to 40 characters");
-        isValidField(lastname, isValidName, "Lastname must contain only letters and spaces, up to 40 characters");
-        isValidField(email, validateEmail, "Email not valid");
-        isValidField(dni, isValidDNI, "Invalid DNI format. It should be in the format X1234567Y or 12345678Z.");
-        isValidField(address, isValidAddress, "Address must contain only letters and spaces, up to 40 characters");
-        isValidField(phone, isValidPhone, "Phone number must contain only digits and can optionally start with a '+' sign, up to 15 characters");
+        isValidField(name, validateUser.isValidName, "Name must contain only letters and spaces, up to 40 characters");
+        isValidField(lastname, validateUser.isValidName, "Lastname must contain only letters and spaces, up to 40 characters");
+        isValidField(email, validateUser.isValidEmail, "Email not valid");
+        isValidField(dni, validateUser.isValidDNI, "Invalid DNI format. It should be in the format X1234567Y or 12345678Z.");
+        isValidField(address, validateUser.isValidAddress, "Address must contain only letters and spaces, up to 40 characters");
+        isValidField(phone, validateUser.isValidPhone, "Phone number must contain only digits and can optionally start with a '+' sign, up to 15 characters");
 
         if (name) updatedFields.name = name;
         if (lastname) updatedFields.lastname = lastname;
@@ -97,7 +89,6 @@ userController.updateUser = async (req, res) => {
         });
 
     } catch (error) {
-        console.error(error);
         return res.status(500).json({
             success: false,
             message: "User can't be updated",
@@ -107,10 +98,10 @@ userController.updateUser = async (req, res) => {
 };
 
 //GET ALL THE USERS
-userController.getAllUsers = async (req, res) => {
+userController.searchUsers = async (req, res) => {
     try {
-        const page = parseInt(req.query.page) || 1;
-        const perPage = parseInt(req.query.per_page) || 6;
+        const page = Math.max(1, parseInt(req.query.page) || 1);
+        const perPage = Math.max(1, parseInt(req.query.per_page) || 6);
         const query = req.query.query;
         const { limit, offset } = getPagination(page, perPage);
 
@@ -123,6 +114,7 @@ userController.getAllUsers = async (req, res) => {
             where: searchCriteria,
             limit: limit,
             offset: offset,
+            order: [['createdAt', 'DESC']]
         });
 
         const totalPages = Math.ceil(count / perPage);
@@ -161,7 +153,6 @@ userController.getAllDentists = async (req, res) => {
             data: dentists,
         });
     } catch (error) {
-        console.error(error);
         return res.status(500).json({
             success: false,
             message: "Failed to retrieve dentists",

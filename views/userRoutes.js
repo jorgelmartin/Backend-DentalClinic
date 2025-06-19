@@ -6,7 +6,7 @@ const router = require('express').Router();
 
 //ROUTES
 router.put('/update', auth, userController.updateUser)
-router.get('/getAllUsers', auth, isAdmin, userController.getAllUsers)
+router.get('/searchUsers', auth, isAdmin, userController.searchUsers)
 router.get('/getUser', auth, userController.getUser)
 router.get('/getUserDetails/:id', auth, isAdmin, userController.getUserDetailsForAdmin)
 router.get('/getDentists', auth, userController.getAllDentists)

@@ -2,7 +2,6 @@
 const {
   Model
 } = require('sequelize');
-const { PassThrough } = require('stream');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -11,14 +10,17 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-        models.User.hasMany(models.Appointment, {
-          foreignKey: 'patient_id',
-          as: 'appointments',
-        });
-        models.User.hasMany(models.Appointment, {
-          foreignKey: 'dentist_id',
-          as: 'dentistAppointments',
-        });
+      models.User.hasMany(models.Appointment, {
+        foreignKey: 'patient_id',
+        as: 'appointments',
+      });
+      models.User.hasMany(models.Appointment, {
+        foreignKey: 'dentist_id',
+        as: 'dentistAppointments',
+      });
+      models.User.hasMany(models.AccessLog, {
+        foreignKey: 'user_id'
+      });
     }
   }
   User.init({

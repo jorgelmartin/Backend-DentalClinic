@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const JWT_SECRET = process.env.JWT_SECRET || "";
 
 const auth = (req, res, next) => {
     try {
@@ -13,11 +14,10 @@ const auth = (req, res, next) => {
 
         const token = bearerToken.split(" ")[1];
 
-        const decoded = jwt.verify(token, 'secreto');
+        const decoded = jwt.verify(token, JWT_SECRET);
 
         req.user_id = decoded.userId;
         req.role_id = decoded.roleId;
-        console.log("req.user_id:", req.user_id);
 
         next();
     } catch (error) {

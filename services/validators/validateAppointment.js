@@ -1,7 +1,9 @@
 // Appointment validation
 
+const validateAppointment = {};
+
 // Validate that the appointment date is future and not on a weekend
-module.exports.validateAppointmentDate = (date, hour, errorMessage) => {
+validateAppointment.validateAppointmentDate = (date, hour, errorMessage) => {
     const appointmentDate = new Date(
         ...date.split('/').reverse().map((val, i) => (i === 0 ? val : val - 1)), 
         ...hour.split(':').map(Number)
@@ -17,7 +19,7 @@ module.exports.validateAppointmentDate = (date, hour, errorMessage) => {
 };
 
 // Validate that there are no duplicate appointments for the doctor
-module.exports.isDoctorAvailable = async (Appointment, dentist_id, date, hour) => {
+validateAppointment.isDoctorAvailable = async (Appointment, dentist_id, date, hour) => {
     const existingAppointment = await Appointment.findOne({
         where: {
             dentist_id: dentist_id,
@@ -29,7 +31,7 @@ module.exports.isDoctorAvailable = async (Appointment, dentist_id, date, hour) =
 };
 
 // Validate that there are no duplicate appointments for the patient
-module.exports.isPatientAvailable = async (Appointment, patient_id, date, hour) => {
+validateAppointment.isPatientAvailable = async (Appointment, patient_id, date, hour) => {
     const patientAppointment = await Appointment.findOne({
         where: {
             patient_id: patient_id,
@@ -41,19 +43,12 @@ module.exports.isPatientAvailable = async (Appointment, patient_id, date, hour) 
 };
 
 // Check if the appointment exists and belongs to the correct user
-module.exports.findAppointment = async (Appointment, appointmentId, userId, userRoleId) => {
-    if (userRoleId === 2) {
-        return await Appointment.findOne({
-            where: {
-                id: appointmentId
-            }
-        });
-    } else {
-        return await Appointment.findOne({
-            where: {
-                id: appointmentId,
-                patient_id: userId
-            }
-        });
-    }
+validateAppointment.checkAppointment = async (Appointment, appointmentId, userId, roleId) => {
+    return await Appointment.findOne({
+        where: roleId === 2
+            ? { id: appointmentId }
+            : { id: appointmentId, patient_id: userId }
+    });
 };
+
+module.exports = validateAppointment;
